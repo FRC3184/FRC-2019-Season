@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.TeleopDrive;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 
 /**
@@ -23,13 +25,17 @@ import frc.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+  private DriveTrain drive;
+  private TeleopDrive teleopDrive;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-      Scheduler.getInstance().enable();
+    Scheduler.getInstance().enable();
+    drive = new DriveTrain();
   }
 
   @Override
@@ -39,6 +45,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    teleopDrive = new TeleopDrive(drive);
+
+    teleopDrive.start();
   }
 
   /**
