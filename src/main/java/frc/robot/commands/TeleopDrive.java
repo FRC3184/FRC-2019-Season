@@ -33,7 +33,7 @@ public class TeleopDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    drive.arcadeDrive(OI.get().getPower(), OI.get().getTurn());
+    drive.arcadeDrive(-OI.get().getPower(), OI.get().getTurn());
   }
 
   // Make this return true when this Command no longer needs to run execute()
