@@ -19,8 +19,8 @@ import frc.robot.RobotMap;
 public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  WPI_TalonSRX leftMaster;
-  WPI_TalonSRX rightMaster;
+  public WPI_TalonSRX leftMaster;
+  public WPI_TalonSRX rightMaster;
   VictorSPX leftSlave;
   VictorSPX rightSlave;
 

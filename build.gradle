@@ -1,5 +1,3 @@
-apply plugin: 'idea'
-
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2019.2.1"

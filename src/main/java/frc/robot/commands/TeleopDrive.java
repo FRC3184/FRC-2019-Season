@@ -20,7 +20,6 @@ public class TeleopDrive extends Command {
 
   public TeleopDrive(DriveTrain drive) {
     // Use requires() here to declare subsystem dependencies
-    super("MyCommandName");
     requires(drive);
     this.drive = drive;
   }
