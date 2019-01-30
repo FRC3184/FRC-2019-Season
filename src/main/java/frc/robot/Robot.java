@@ -7,12 +7,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.auto.AutoDrive;
-import frc.robot.subsystems.EncoderPathFollower;
 import frc.robot.subsystems.DriveTrain;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.PathfinderFRC;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,8 +26,6 @@ import frc.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
   private DriveTrain drive;
   private TeleopDrive teleopDrive;
-  private AutoDrive auto;
-  private EncoderPathFollower follower;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -35,7 +35,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Scheduler.getInstance().enable();
     drive = new DriveTrain();
-    follower = new EncoderPathFollower();
   }
 
   @Override
@@ -63,9 +62,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    auto = new AutoDrive();
 
-    auto.start();
   }
 
   /**
