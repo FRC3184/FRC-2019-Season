@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.auto.FirstTestAuto;
-import frc.robot.subsystems.AutonomousDriveTrain;
+import frc.robot.commands.auto.*;
+import frc.robot.subsystems.AutonomousDriveTrainDefault;
 import frc.robot.subsystems.TeleOpDriveTrain;
 
 /**
@@ -27,7 +27,6 @@ import frc.robot.subsystems.TeleOpDriveTrain;
 public class Robot extends TimedRobot {
   private TeleOpDriveTrain teleOpDriveTrain;
   private TeleopDrive teleopDrive;
-  private AutonomousDriveTrain autonomousDriveTrain;
 
   private Command selectedAutoCommand;
 
@@ -41,9 +40,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Scheduler.getInstance().enable();
     teleOpDriveTrain = new TeleOpDriveTrain();
-    autonomousDriveTrain = new AutonomousDriveTrain();
 
-    m_chooser.setDefaultOption("First Test Auto", new FirstTestAuto());
+    m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
+    m_chooser.addOption("My Follower Test", new MyEncoderFollowerTestAuto());
+    m_chooser.addOption("My Follower Test w/ Talon PID", new MyEncoderFollowerTalonPIDTestAuto());
+    m_chooser.addOption("My Follower Test w/ Fixed(?) Talon PID", new MyEncoderFollowerTalonPDFixTestAuto());
 
     SmartDashboard.putData("Auto mode select", m_chooser);
   }

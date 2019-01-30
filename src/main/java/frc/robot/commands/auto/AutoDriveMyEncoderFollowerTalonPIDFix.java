@@ -1,24 +1,24 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.AutonomousDriveTrain;
+import frc.robot.subsystems.AutonomousDriveTrainMyEncoderFollowerTalonPIDFix;
 
-public class AutoDrive extends Command {
-    AutonomousDriveTrain drive;
+public class AutoDriveMyEncoderFollowerTalonPIDFix extends Command {
+    AutonomousDriveTrainMyEncoderFollowerTalonPIDFix drive;
 
-    private static String m_selectedPath;
+    private static String m_path;
 
-    public AutoDrive(AutonomousDriveTrain drive, String m_selectedPath) {
+    public AutoDriveMyEncoderFollowerTalonPIDFix(AutonomousDriveTrainMyEncoderFollowerTalonPIDFix drive, String m_path) {
         requires(drive);
         this.drive = drive;
-        this.m_selectedPath = m_selectedPath;
+        this.m_path = m_path;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        m_selectedPath = "example";
+        m_path = "example";
 
-        drive.setupPath(m_selectedPath);
+        drive.setupPath(m_path);
     }
 
     // Called repeatedly when this Command is scheduled to run
