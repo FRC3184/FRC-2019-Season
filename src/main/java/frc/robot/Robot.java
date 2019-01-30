@@ -8,7 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.auto.AutoCommand;
 import frc.robot.subsystems.AutonomousDriveTrain;
@@ -27,6 +31,8 @@ public class Robot extends TimedRobot {
   private AutoCommand autoCommand;
   private AutonomousDriveTrain autonomousDriveTrain;
 
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -36,6 +42,10 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().enable();
     driveTrain = new DriveTrain();
     autonomousDriveTrain = new AutonomousDriveTrain();
+
+    m_chooser.setDefaultOption("First Test Auto", new AutoCommand());
+
+    SmartDashboard.putData("Auto mode select", m_chooser);
   }
 
   @Override
@@ -63,7 +73,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autoCommand = new AutoCommand("Example");
+    autoCommand = new AutoCommand();
 
     autoCommand.start();
   }

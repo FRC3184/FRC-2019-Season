@@ -5,13 +5,7 @@ import frc.robot.subsystems.AutonomousDriveTrain;
 
 public class AutoCommand extends CommandGroup {
 
-    public AutoCommand(String selected) {
-        parseSelected(selected);
-
+    public AutoCommand() {
         addSequential(new AutoDrive(new AutonomousDriveTrain(), "example"));
-    }
-
-    public String parseSelected(String selected) {
-        return "example";
     }
 }
