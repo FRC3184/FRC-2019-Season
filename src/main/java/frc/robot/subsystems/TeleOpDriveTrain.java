@@ -16,7 +16,7 @@ import frc.robot.RobotMap;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class DriveTrain extends Subsystem {
+public class TeleOpDriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public WPI_TalonSRX leftMaster;
@@ -26,7 +26,7 @@ public class DriveTrain extends Subsystem {
 
   DifferentialDrive robotDrive;
 
-  public DriveTrain () {
+  public TeleOpDriveTrain() {
     leftMaster = new WPI_TalonSRX(RobotMap.leftDriveMaster);
     rightMaster = new WPI_TalonSRX(RobotMap.rightDriveMaster);
     leftSlave = new VictorSPX(RobotMap.leftDriveSlave);

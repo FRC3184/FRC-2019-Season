@@ -12,17 +12,17 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.TeleOpDriveTrain;
 import jaci.pathfinder.Pathfinder;
 
 /**
  * An example command.  You can replace me with your own command.
  */
 public class TeleopDrive extends Command {
-  DriveTrain drive;
+  TeleOpDriveTrain drive;
   AHRS nav_x;
 
-  public TeleopDrive(DriveTrain drive) {
+  public TeleopDrive(TeleOpDriveTrain drive) {
     // Use requires() here to declare subsystem dependencies
     requires(drive);
     this.drive = drive;

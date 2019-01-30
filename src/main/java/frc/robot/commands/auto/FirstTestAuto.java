@@ -3,9 +3,9 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.subsystems.AutonomousDriveTrain;
 
-public class AutoCommand extends CommandGroup {
+public class FirstTestAuto extends CommandGroup {
 
-    public AutoCommand() {
+    public FirstTestAuto() {
         addSequential(new AutoDrive(new AutonomousDriveTrain(), "example"));
     }
 }

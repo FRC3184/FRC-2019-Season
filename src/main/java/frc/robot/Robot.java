@@ -12,11 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.auto.AutoCommand;
+import frc.robot.commands.auto.FirstTestAuto;
 import frc.robot.subsystems.AutonomousDriveTrain;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.TeleOpDriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,10 +25,11 @@ import frc.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
-  private DriveTrain driveTrain;
-  private TeleopDrive teleopDrivetrain;
-  private AutoCommand autoCommand;
+  private TeleOpDriveTrain teleOpDriveTrain;
+  private TeleopDrive teleopDrive;
   private AutonomousDriveTrain autonomousDriveTrain;
+
+  private Command selectedAutoCommand;
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -40,10 +40,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Scheduler.getInstance().enable();
-    driveTrain = new DriveTrain();
+    teleOpDriveTrain = new TeleOpDriveTrain();
     autonomousDriveTrain = new AutonomousDriveTrain();
 
-    m_chooser.setDefaultOption("First Test Auto", new AutoCommand());
+    m_chooser.setDefaultOption("First Test Auto", new FirstTestAuto());
 
     SmartDashboard.putData("Auto mode select", m_chooser);
   }
@@ -55,9 +55,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    teleopDrivetrain = new TeleopDrive(driveTrain);
+    teleopDrive = new TeleopDrive(teleOpDriveTrain);
 
-    teleopDrivetrain.start();
+    teleopDrive.start();
   }
 
   /**
@@ -73,9 +73,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autoCommand = new AutoCommand();
+      selectedAutoCommand = m_chooser.getSelected();
 
-    autoCommand.start();
+      selectedAutoCommand.start();
   }
 
   /**
