@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.auto.AutoCommand;
-import frc.robot.commands.auto.AutoDrive;
 import frc.robot.subsystems.AutonomousDriveTrain;
 import frc.robot.subsystems.DriveTrain;
 
