@@ -10,6 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.auto.AutoCommand;
+import frc.robot.commands.auto.AutoDrive;
+import frc.robot.subsystems.AutonomousDriveTrain;
 import frc.robot.subsystems.DriveTrain;
 
 /**
@@ -20,8 +23,10 @@ import frc.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
-  private DriveTrain drive;
-  private TeleopDrive teleopDrive;
+  private DriveTrain driveTrain;
+  private TeleopDrive teleopDrivetrain;
+  private AutoCommand autoCommand;
+  private AutonomousDriveTrain autonomousDriveTrain;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -30,7 +35,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Scheduler.getInstance().enable();
-    drive = new DriveTrain();
+    driveTrain = new DriveTrain();
+    autonomousDriveTrain = new AutonomousDriveTrain();
   }
 
   @Override
@@ -40,9 +46,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    teleopDrive = new TeleopDrive(drive);
+    teleopDrivetrain = new TeleopDrive(driveTrain);
 
-    teleopDrive.start();
+    teleopDrivetrain.start();
   }
 
   /**
@@ -58,7 +64,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    autoCommand = new AutoCommand("Example");
 
+    autoCommand.start();
   }
 
   /**
