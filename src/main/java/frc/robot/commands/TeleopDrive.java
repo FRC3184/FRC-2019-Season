@@ -8,13 +8,10 @@
 package frc.robot.commands;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import jaci.pathfinder.Pathfinder;
 

@@ -7,14 +7,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.DriveTrain;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.PathfinderFRC;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.followers.EncoderFollower;
 
 /**
  * The VM is configured to automatically run this class, and to call the
