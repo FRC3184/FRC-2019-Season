@@ -1,14 +1,13 @@
-package frc.robot.commands.auto;
+package frc.robot.AutoTests;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.AutonomousDriveTrainMyEncoderFollowerTalonPIDFix;
 
-public class AutoDriveMyEncoderFollowerTalonPIDFix extends Command {
-    AutonomousDriveTrainMyEncoderFollowerTalonPIDFix drive;
+public class AutoDriveMyEncoderFollowerTalonPID extends Command {
+    AutonomousDriveTrainMyEncoderFollowerTalonPID drive;
 
     private static String m_path;
 
-    public AutoDriveMyEncoderFollowerTalonPIDFix(AutonomousDriveTrainMyEncoderFollowerTalonPIDFix drive, String m_path) {
+    public AutoDriveMyEncoderFollowerTalonPID(AutonomousDriveTrainMyEncoderFollowerTalonPID drive, String m_path) {
         requires(drive);
         this.drive = drive;
         this.m_path = m_path;

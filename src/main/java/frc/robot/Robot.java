@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.AutoTests.DefaultTestAuto;
+import frc.robot.AutoTests.MyEncoderFollowerTalonPDFixTestAuto;
+import frc.robot.AutoTests.MyEncoderFollowerTalonPIDTestAuto;
+import frc.robot.AutoTests.MyEncoderFollowerTestAuto;
 import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.auto.*;
-import frc.robot.subsystems.AutonomousDriveTrainDefault;
 import frc.robot.subsystems.TeleOpDriveTrain;
 
 /**

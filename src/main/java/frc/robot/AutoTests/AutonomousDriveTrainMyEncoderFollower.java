@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.AutoTests;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
-import frc.robot.MyEncoderFollower;
+
+import java.io.File;
 
 public class AutonomousDriveTrainMyEncoderFollower extends Subsystem {
 
@@ -47,19 +47,19 @@ public class AutonomousDriveTrainMyEncoderFollower extends Subsystem {
     }
 
     public void setupPath(String pathName) {
-        Trajectory left_trajectory = PathfinderFRC.getTrajectory(pathName + ".right");
-        Trajectory right_trajectory = PathfinderFRC.getTrajectory(pathName + ".left");
+        Trajectory left_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".left" + ".pf1.csv"));
+        Trajectory right_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".right" + ".pf1.csv"));
 
         m_left_follower = new MyEncoderFollower(left_trajectory);
         m_right_follower = new MyEncoderFollower(right_trajectory);
 
         m_left_follower.configureEncoder(getLeftEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_left_follower.configurePIDVA(0.5, 0.0, 0.0, 1 / k_max_velocity, 0);
 
         m_right_follower.configureEncoder(getRightEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_right_follower.configurePIDVA(0.5, 0.0, 0.0, 1 / k_max_velocity, 0);
     }
 
     public void followPath() {
@@ -71,7 +71,7 @@ public class AutonomousDriveTrainMyEncoderFollower extends Subsystem {
         double turn =  0.8 * (-1.0/80.0) * heading_difference;
 
         m_left_master.set(ControlMode.PercentOutput, left_speed + turn);
-        m_right_master.set(ControlMode.PercentOutput, right_speed - turn);
+        m_right_master.set(ControlMode.PercentOutput, -(right_speed) - turn);
     }
 
     /**Method used by system to check if FOLLOWERS are finished

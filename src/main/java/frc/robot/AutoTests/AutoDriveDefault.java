@@ -1,14 +1,13 @@
-package frc.robot.commands.auto;
+package frc.robot.AutoTests;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.AutonomousDriveTrainMyEncoderFollower;
 
-public class AutoDriveMyEncoderFollower extends Command {
-    AutonomousDriveTrainMyEncoderFollower drive;
+public class AutoDriveDefault extends Command {
+    AutonomousDriveTrainDefault drive;
 
     private static String m_path;
 
-    public AutoDriveMyEncoderFollower(AutonomousDriveTrainMyEncoderFollower drive, String m_path) {
+    public AutoDriveDefault(AutonomousDriveTrainDefault drive, String m_path) {
         requires(drive);
         this.drive = drive;
         this.m_path = m_path;
@@ -28,7 +27,7 @@ public class AutoDriveMyEncoderFollower extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return drive.pathCompete();
+        return false;
     }
 
     // Called once after isFinished returns true

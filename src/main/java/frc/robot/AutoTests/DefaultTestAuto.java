@@ -1,7 +1,6 @@
-package frc.robot.commands.auto;
+package frc.robot.AutoTests;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.subsystems.AutonomousDriveTrainDefault;
 
 public class DefaultTestAuto extends CommandGroup {
 

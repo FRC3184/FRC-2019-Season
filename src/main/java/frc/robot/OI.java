@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -42,10 +43,10 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
-  private Joystick controller;
+  private XboxController controller;
 
     private OI (){
-        controller = new Joystick(0);
+        controller = new XboxController(0);
     }
 
     public static OI get() {
@@ -71,5 +72,9 @@ public class OI {
         turn = controller.getX(GenericHID.Hand.kRight);
 
         return turn;
+    }
+
+    public boolean getAlign() {
+        return controller.getAButton();
     }
 }

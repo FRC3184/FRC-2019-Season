@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.AutoTests;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -6,12 +6,11 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.MyEncoderFollowerTalonPID;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
-import frc.robot.MyEncoderFollowerTalonPIDFix;
+
+import java.io.File;
 
 public class AutonomousDriveTrainMyEncoderFollowerTalonPIDFix extends Subsystem {
 
@@ -48,8 +47,8 @@ public class AutonomousDriveTrainMyEncoderFollowerTalonPIDFix extends Subsystem 
     }
 
     public void setupPath(String pathName) {
-        Trajectory left_trajectory = PathfinderFRC.getTrajectory(pathName + ".right");
-        Trajectory right_trajectory = PathfinderFRC.getTrajectory(pathName + ".left");
+        Trajectory left_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".left" + ".pf1.csv"));
+        Trajectory right_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".right" + ".pf1.csv"));
 
         m_left_follower = new MyEncoderFollowerTalonPID(left_trajectory);
         m_right_follower = new MyEncoderFollowerTalonPID(right_trajectory);

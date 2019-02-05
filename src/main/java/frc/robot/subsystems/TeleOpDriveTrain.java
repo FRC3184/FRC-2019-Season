@@ -47,4 +47,8 @@ public class TeleOpDriveTrain extends Subsystem {
   public void arcadeDrive(double power, double turn) {
     robotDrive.arcadeDrive(power, turn);
   }
+
+  public void tankDrive(double leftPower, double rightPower) {
+    robotDrive.tankDrive(leftPower, rightPower);
+  }
 }

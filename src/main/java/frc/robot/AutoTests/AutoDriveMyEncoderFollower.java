@@ -1,14 +1,13 @@
-package frc.robot.commands.auto;
+package frc.robot.AutoTests;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.AutonomousDriveTrainDefault;
 
-public class AutoDriveDefault extends Command {
-    AutonomousDriveTrainDefault drive;
+public class AutoDriveMyEncoderFollower extends Command {
+    AutonomousDriveTrainMyEncoderFollower drive;
 
     private static String m_path;
 
-    public AutoDriveDefault(AutonomousDriveTrainDefault drive, String m_path) {
+    public AutoDriveMyEncoderFollower(AutonomousDriveTrainMyEncoderFollower drive, String m_path) {
         requires(drive);
         this.drive = drive;
         this.m_path = m_path;

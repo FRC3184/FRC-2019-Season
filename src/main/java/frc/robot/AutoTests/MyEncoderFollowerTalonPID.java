@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.AutoTests;
 
 import jaci.pathfinder.Trajectory;
 
