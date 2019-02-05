@@ -18,8 +18,8 @@ import java.io.File;
 public class AutonomousDriveTrainDefault extends Subsystem {
 
     private static final int k_ticks_per_rev = 4096;
-    private static final double k_wheel_diameter = 6 / 12;
-    private static final double k_max_velocity = 10;
+    private static final double k_wheel_diameter = 0.1524;
+    private static final double k_max_velocity = 0.254;
 
     private TalonSRX m_left_master;
     private TalonSRX m_right_master;
