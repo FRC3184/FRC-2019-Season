@@ -12,10 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.AutoTests.DefaultTestAuto;
-import frc.robot.AutoTests.MyEncoderFollowerTalonPDFixTestAuto;
-import frc.robot.AutoTests.MyEncoderFollowerTalonPIDTestAuto;
-import frc.robot.AutoTests.MyEncoderFollowerTestAuto;
+import frc.robot.AutoTests.*;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.TeleOpDriveTrain;
 
@@ -47,6 +44,10 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Follower Test", new MyEncoderFollowerTestAuto());
     m_chooser.addOption("My Follower Test w/ Talon PID", new MyEncoderFollowerTalonPIDTestAuto());
     m_chooser.addOption("My Follower Test w/ Fixed(?) Talon PID", new MyEncoderFollowerTalonPDFixTestAuto());
+    m_chooser.addOption("Default Test Waypoints", new DefaultTestAutoWaypoints());
+    m_chooser.addOption("My Follower Test Waypoints", new MyEncoderFollowerTestAutoWaypoints());
+    m_chooser.addOption("My Follower Test w/ Talon PID Waypoints", new MyEncoderFollowerTalonPIDTestAutoWaypoints());
+    m_chooser.addOption("My Follower Test w/ Fixed(?) Talon PID Waypoints", new MyEncoderFollowerTalonPDFixTestAutoWaypoints());
 
     SmartDashboard.putData("Auto mode select", m_chooser);
   }
