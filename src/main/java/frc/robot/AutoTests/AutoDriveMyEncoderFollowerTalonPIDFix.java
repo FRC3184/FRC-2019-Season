@@ -1,6 +1,7 @@
 package frc.robot.AutoTests;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoDriveMyEncoderFollowerTalonPIDFix extends Command {
     AutonomousDriveTrainMyEncoderFollowerTalonPIDFix drive;
@@ -22,7 +23,11 @@ public class AutoDriveMyEncoderFollowerTalonPIDFix extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        drive.followPath();
+        if (drive.gyroCalibrated()) {
+            drive.followPath();
+        }
+
+        SmartDashboard.putBoolean("Gtro Calibrted", drive.gyroCalibrated());
     }
 
     // Make this return true when this Command no longer needs to run execute()

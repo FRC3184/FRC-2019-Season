@@ -93,10 +93,14 @@ public class AutonomousDriveTrainMyEncoderFollower extends Subsystem {
     }
 
     public int getRightEncoderPos() {
-        return m_right_master.getSelectedSensorPosition();
+        return -m_right_master.getSelectedSensorPosition();
     }
 
     public float getSelectedGyroValue() {
         return m_navX.getYaw();
+    }
+
+    public boolean gyroCalibrated() {
+        return !m_navX.isCalibrating();
     }
 }

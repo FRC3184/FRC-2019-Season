@@ -45,7 +45,7 @@ public class AutonomousDriveTrainDefault extends Subsystem {
 
         m_left_master.setSelectedSensorPosition(0);
         m_right_master.setSelectedSensorPosition(0);
-        m_navX.zeroYaw();
+        //m_navX.zeroYaw();
     }
 
     @Override
@@ -75,14 +75,16 @@ public class AutonomousDriveTrainDefault extends Subsystem {
         double heading = getSelectedGyroValue();
         double desired_heading = Pathfinder.r2d(m_left_follower.getHeading());
         double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
-        double turn =  0.8 * (-1.0/80.0) * heading_difference;
+        double turn =  .005 * heading_difference;
 
         SmartDashboard.putNumber("Gyro", heading);
         SmartDashboard.putNumber("Left speed", left_speed);
         SmartDashboard.putNumber("Right speed", right_speed);
+        SmartDashboard.putNumber("Left Encoder", m_left_master.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Right Encoder", m_right_master.getSelectedSensorPosition());
 
-        m_left_master.set(ControlMode.PercentOutput, .01*(left_speed)); //+ turn
-        m_right_master.set(ControlMode.PercentOutput, -.01*(right_speed)); //- turn
+        m_left_master.set(ControlMode.PercentOutput, .25*(left_speed)); //+ turn -turn
+        m_right_master.set(ControlMode.PercentOutput, -.25*(right_speed)); //- turn -turn
     }
 
     /**Method used by system to check if FOLLOWERS are finished
@@ -100,7 +102,7 @@ public class AutonomousDriveTrainDefault extends Subsystem {
     }
 
     public int getLeftEncoderPos() {
-        return m_left_master.getSelectedSensorPosition();
+        return -m_left_master.getSelectedSensorPosition();
     }
 
     public int getRightEncoderPos() {
@@ -109,5 +111,9 @@ public class AutonomousDriveTrainDefault extends Subsystem {
 
     public float getSelectedGyroValue() {
         return m_navX.getYaw();
+    }
+
+    public boolean gyroCalibrated() {
+        return !m_navX.isCalibrating();
     }
 }

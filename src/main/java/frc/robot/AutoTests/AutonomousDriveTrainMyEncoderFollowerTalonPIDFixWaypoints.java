@@ -19,6 +19,7 @@ public class AutonomousDriveTrainMyEncoderFollowerTalonPIDFixWaypoints extends S
     private static final int k_ticks_per_rev = 4096;
     private static final double k_wheel_diameter = 0.1524;
     private static final double k_max_velocity = 3.048;
+    //Track is .55 meters, wheelbase is .295
     double wheelbase_width = 0.55;
 
     private TalonSRX m_left_master;
@@ -49,7 +50,7 @@ public class AutonomousDriveTrainMyEncoderFollowerTalonPIDFixWaypoints extends S
         //setDefaultCommand(new AutoDriveDefault(this));
     }
 
-    public void setupPath(String pathName) {
+    public void setupPath() {
         // 3 Waypoints
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(6.5, 0, Pathfinder.d2r(0)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
@@ -129,10 +130,14 @@ public class AutonomousDriveTrainMyEncoderFollowerTalonPIDFixWaypoints extends S
     }
 
     public int getRightEncoderPos() {
-        return m_right_master.getSelectedSensorPosition();
+        return -m_right_master.getSelectedSensorPosition();
     }
 
     public float getSelectedGyroValue() {
         return m_navX.getYaw();
+    }
+
+    public boolean gyroCalibrated() {
+        return !m_navX.isCalibrating();
     }
 }
