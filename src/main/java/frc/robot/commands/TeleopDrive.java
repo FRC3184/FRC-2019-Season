@@ -54,6 +54,9 @@ public class TeleopDrive extends Command {
     KpAim = -0.1f;
     KpDistance = -0.1f;
     min_aim_command = 0.05f;
+
+    drive.leftMaster.setSelectedSensorPosition(0);
+    drive.rightMaster.setSelectedSensorPosition(0);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -74,6 +77,8 @@ public class TeleopDrive extends Command {
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("Left Power", leftPower);
     SmartDashboard.putNumber("Right Power", rightPower);
+    SmartDashboard.putNumber("Left Encoder", drive.leftMaster.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Right Encoder", drive.rightMaster.getSelectedSensorPosition());
 
     if (OI.get().getAlign()) {
       float Kp = -0.01f;

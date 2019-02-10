@@ -19,7 +19,7 @@ public class AutonomousDriveTrainDefault extends Subsystem {
 
     private static final int k_ticks_per_rev = 4096;
     private static final double k_wheel_diameter = 0.1524;
-    private static final double k_max_velocity = 3.048;
+    private static final double k_max_velocity = 4.572;
 
     private TalonSRX m_left_master;
     private TalonSRX m_right_master;
@@ -32,6 +32,8 @@ public class AutonomousDriveTrainDefault extends Subsystem {
     private EncoderFollower m_right_follower;
 
     boolean m_finished = false;
+
+    double topSpeed = 0;
 
     public AutonomousDriveTrainDefault() {
         m_left_master = new TalonSRX(RobotMap.leftDriveMaster);
@@ -60,13 +62,17 @@ public class AutonomousDriveTrainDefault extends Subsystem {
         m_left_follower = new EncoderFollower(left_trajectory);
         m_right_follower = new EncoderFollower(right_trajectory);
 
+        m_left_master.setSelectedSensorPosition(0);
+        m_right_master.setSelectedSensorPosition(0);
+        m_navX.zeroYaw();
+
         m_left_follower.configureEncoder(getLeftEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_left_follower.configurePIDVA(.5, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_left_follower.configurePIDVA(0, 0.0, 0.0, .76345, 0.2224);
 
         m_right_follower.configureEncoder(getRightEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_right_follower.configurePIDVA(.5, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_right_follower.configurePIDVA(0, 0.0, 0.0, .7453, 0.20725);
     }
 
     public void followPath() {
@@ -77,14 +83,19 @@ public class AutonomousDriveTrainDefault extends Subsystem {
         double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
         double turn =  .005 * heading_difference;
 
+        if (left_speed > topSpeed) {
+            topSpeed = left_speed;
+        }
+
         SmartDashboard.putNumber("Gyro", heading);
         SmartDashboard.putNumber("Left speed", left_speed);
         SmartDashboard.putNumber("Right speed", right_speed);
         SmartDashboard.putNumber("Left Encoder", m_left_master.getSelectedSensorPosition());
         SmartDashboard.putNumber("Right Encoder", m_right_master.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Top Speed", topSpeed);
 
-        m_left_master.set(ControlMode.PercentOutput, .25*(left_speed)); //+ turn -turn
-        m_right_master.set(ControlMode.PercentOutput, -.25*(right_speed)); //- turn -turn
+        m_left_master.set(ControlMode.PercentOutput, .36*(left_speed)); //+ turn -turn
+        m_right_master.set(ControlMode.PercentOutput, -.36*(right_speed)); //- turn -turn
     }
 
     /**Method used by system to check if FOLLOWERS are finished

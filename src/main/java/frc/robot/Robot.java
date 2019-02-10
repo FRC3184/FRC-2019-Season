@@ -41,13 +41,7 @@ public class Robot extends TimedRobot {
     teleOpDriveTrain = new TeleOpDriveTrain();
 
     m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
-    m_chooser.addOption("My Follower Test", new MyEncoderFollowerTestAuto());
-    m_chooser.addOption("My Follower Test w/ Talon PID", new MyEncoderFollowerTalonPIDTestAuto());
-    m_chooser.addOption("My Follower Test w/ Fixed(?) Talon PID", new MyEncoderFollowerTalonPDFixTestAuto());
     m_chooser.addOption("Default Test Waypoints", new DefaultTestAutoWaypoints());
-    m_chooser.addOption("My Follower Test Waypoints", new MyEncoderFollowerTestAutoWaypoints());
-    m_chooser.addOption("My Follower Test w/ Talon PID Waypoints", new MyEncoderFollowerTalonPIDTestAutoWaypoints());
-    m_chooser.addOption("My Follower Test w/ Fixed(?) Talon PID Waypoints", new MyEncoderFollowerTalonPDFixTestAutoWaypoints());
 
     SmartDashboard.putData("Auto mode select", m_chooser);
   }
