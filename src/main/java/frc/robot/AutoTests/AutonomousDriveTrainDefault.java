@@ -68,11 +68,11 @@ public class AutonomousDriveTrainDefault extends Subsystem {
 
         m_left_follower.configureEncoder(getLeftEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_left_follower.configurePIDVA(0, 0.0, 0.0, .76345, 0.2224);
+        m_left_follower.configurePIDVA(0, 0.0, 0.0, .7704, .2485);
 
         m_right_follower.configureEncoder(getRightEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_right_follower.configurePIDVA(0, 0.0, 0.0, .7453, 0.20725);
+        m_right_follower.configurePIDVA(0, 0.0, 0.0, .7335, .2528);
     }
 
     public void followPath() {
@@ -94,8 +94,8 @@ public class AutonomousDriveTrainDefault extends Subsystem {
         SmartDashboard.putNumber("Right Encoder", m_right_master.getSelectedSensorPosition());
         SmartDashboard.putNumber("Top Speed", topSpeed);
 
-        m_left_master.set(ControlMode.PercentOutput, .36*(left_speed)); //+ turn -turn
-        m_right_master.set(ControlMode.PercentOutput, -.36*(right_speed)); //- turn -turn
+        m_left_master.set(ControlMode.PercentOutput, (left_speed)); //+ turn -turn
+        m_right_master.set(ControlMode.PercentOutput, (right_speed)); //- turn -turn
     }
 
     /**Method used by system to check if FOLLOWERS are finished
