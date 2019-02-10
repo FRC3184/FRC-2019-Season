@@ -98,7 +98,7 @@ public class AutonomousDriveTrainDefault extends Subsystem {
      *
      * @return
      */
-    public boolean pathCompete() {
+    public boolean pathComplete() {
         //AND instead of OR operator?
         return m_left_follower.isFinished() || m_right_follower.isFinished();
     }

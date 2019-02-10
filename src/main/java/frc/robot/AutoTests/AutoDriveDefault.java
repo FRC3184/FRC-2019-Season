@@ -36,12 +36,12 @@ public class AutoDriveDefault extends Command {
         }
 
         SmartDashboard.putBoolean("Gyro Calibrated", drive.gyroCalibrated());
-        SmartDashboard.putBoolean("finished", drive.pathCompete());
+        SmartDashboard.putBoolean("finished", drive.pathComplete());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return drive.pathCompete();
+        return false;
     }
 
     // Called once after isFinished returns true

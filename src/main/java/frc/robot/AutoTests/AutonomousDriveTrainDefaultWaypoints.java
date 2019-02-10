@@ -91,11 +91,11 @@ public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
 
         m_left_follower.configureEncoder(getLeftEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_left_follower.configurePIDVA(.5, 0.0, 0.0, .21063, .067941);
+        m_left_follower.configurePIDVA(0, 0.0, 0.0, .21063, .067941);
 
         m_right_follower.configureEncoder(getRightEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_right_follower.configurePIDVA(.5, 0.0, 0.0, .20054, .069116);
+        m_right_follower.configurePIDVA(0, 0.0, 0.0, .20054, .069116);
     }
 
     public void followPath() {
@@ -125,7 +125,7 @@ public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
      *
      * @return
      */
-    public boolean pathCompete() {
+    public boolean pathComplete() {
         //AND instead of OR operator?
         return m_left_follower.isFinished() || m_right_follower.isFinished();
     }
