@@ -11,11 +11,11 @@ public class AutoDriveDefaultWaypoints extends Command {
     public AutoDriveDefaultWaypoints(AutonomousDriveTrainDefaultWaypoints drive) {
         requires(drive);
         this.drive = drive;
-
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        drive.setupPath();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -24,12 +24,13 @@ public class AutoDriveDefaultWaypoints extends Command {
             drive.followPath();
         }
 
-        SmartDashboard.putBoolean("Gtro Calibrted", drive.gyroCalibrated());
+        SmartDashboard.putBoolean("Gyro Calibrated", drive.gyroCalibrated());
+        SmartDashboard.putBoolean("fnished", drive.pathCompete());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return drive.pathCompete();
     }
 
     // Called once after isFinished returns true

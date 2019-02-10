@@ -62,7 +62,7 @@ public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
         // 3 Waypoints
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, Pathfinder.d2r(0)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-                new Waypoint(6.5, 0, Pathfinder.d2r(0))
+                new Waypoint(13, 0, Pathfinder.d2r(0))
         };
 
         // Create the Trajectory Configuration
