@@ -14,8 +14,6 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
-import java.io.File;
-
 public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
 
     private static final int k_ticks_per_rev = 4096;
@@ -47,10 +45,6 @@ public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
 
         m_left_slave.follow(m_left_master);
         m_right_slave.follow(m_right_master);
-
-        m_left_master.setSelectedSensorPosition(0);
-        m_right_master.setSelectedSensorPosition(0);
-        m_navX.zeroYaw();
     }
 
     @Override
@@ -62,7 +56,7 @@ public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
         // 3 Waypoints
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, Pathfinder.d2r(0)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-                new Waypoint(13, 0, Pathfinder.d2r(0))
+                new Waypoint(6.5, 0, Pathfinder.d2r(0))
         };
 
         // Create the Trajectory Configuration
@@ -142,11 +136,11 @@ public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
     }
 
     public int getLeftEncoderPos() {
-        return m_left_master.getSelectedSensorPosition();
+        return -m_left_master.getSelectedSensorPosition();
     }
 
     public int getRightEncoderPos() {
-        return -m_right_master.getSelectedSensorPosition();
+        return m_right_master.getSelectedSensorPosition();
     }
 
     public float getSelectedGyroValue() {

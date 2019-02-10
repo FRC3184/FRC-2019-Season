@@ -44,10 +44,6 @@ public class AutonomousDriveTrainDefault extends Subsystem {
 
         m_left_slave.follow(m_left_master);
         m_right_slave.follow(m_right_master);
-
-        m_left_master.setSelectedSensorPosition(0);
-        m_right_master.setSelectedSensorPosition(0);
-        //m_navX.zeroYaw();
     }
 
     @Override

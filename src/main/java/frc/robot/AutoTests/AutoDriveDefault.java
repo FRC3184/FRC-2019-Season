@@ -7,7 +7,7 @@ import frc.robot.AutoTests.AutonomousDriveTrainDefault;
 public class AutoDriveDefault extends Command {
     AutonomousDriveTrainDefault drive;
 
-    boolean firstRun = true;
+    boolean firstRun;
 
     private static String m_path;
 
@@ -36,11 +36,12 @@ public class AutoDriveDefault extends Command {
         }
 
         SmartDashboard.putBoolean("Gyro Calibrated", drive.gyroCalibrated());
+        SmartDashboard.putBoolean("finished", drive.pathCompete());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return drive.pathCompete();
     }
 
     // Called once after isFinished returns true

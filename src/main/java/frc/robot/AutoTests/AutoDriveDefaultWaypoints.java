@@ -6,26 +6,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutoDriveDefaultWaypoints extends Command {
     AutonomousDriveTrainDefaultWaypoints drive;
 
-    private static String m_path;
+    boolean firstRun;
 
     public AutoDriveDefaultWaypoints(AutonomousDriveTrainDefaultWaypoints drive) {
         requires(drive);
         this.drive = drive;
+        firstRun = true;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        drive.setupPath();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if (drive.gyroCalibrated()) {
-            drive.followPath();
+            if (firstRun == false) {
+                drive.followPath();
+            } else {
+                drive.setupPath();
+
+                firstRun = false;
+            }
         }
 
         SmartDashboard.putBoolean("Gyro Calibrated", drive.gyroCalibrated());
-        SmartDashboard.putBoolean("fnished", drive.pathCompete());
+        SmartDashboard.putBoolean("finished", drive.pathCompete());
     }
 
     // Make this return true when this Command no longer needs to run execute()
