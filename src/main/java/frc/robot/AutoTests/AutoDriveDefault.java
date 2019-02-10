@@ -15,6 +15,7 @@ public class AutoDriveDefault extends Command {
         requires(drive);
         this.drive = drive;
         this.m_path = m_path;
+        firstRun = true;
     }
 
     // Called just before this Command runs the first time
