@@ -73,8 +73,13 @@ public class OI {
 
         return turn;
     }
+    public boolean getElevatorPreset1() {
+        return controller.getBButton();
+    }
 
-    public boolean getAlign() {
+        public boolean getAlign() {
         return controller.getAButton();
     }
+
+
 }
