@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.AutoTests.*;
+import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.TeleOpDriveTrain;
+import frc.robot.subsystems.TeleOpElevator;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,6 +28,8 @@ import frc.robot.subsystems.TeleOpDriveTrain;
 public class Robot extends TimedRobot {
   private TeleOpDriveTrain teleOpDriveTrain;
   private TeleopDrive teleopDrive;
+  private TeleOpElevator TeleOpElevator;
+  private ElevatorCommand ElevatorCommand;
 
   private Command selectedAutoCommand;
 
@@ -39,6 +43,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Scheduler.getInstance().enable();
     teleOpDriveTrain = new TeleOpDriveTrain();
+    TeleOpElevator = new TeleOpElevator();
 
     m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
     m_chooser.addOption("Default Test Waypoints", new DefaultTestAutoWaypoints());
@@ -54,6 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     teleopDrive = new TeleopDrive(teleOpDriveTrain);
+    ElevatorCommand = new ElevatorCommand(TeleOpElevator);
 
     teleopDrive.start();
   }
