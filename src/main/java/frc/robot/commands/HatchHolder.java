@@ -7,21 +7,23 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.TeleOpElevator;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.TeleOpHatch;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class ElevatorCommand extends Command {
-  TeleOpElevator drive;
-  public ElevatorCommand(TeleOpElevator drive) {
-    requires(drive);
-    this.drive = drive;
+public class HatchHolder extends Command {
+  TeleOpHatch hatch;
 
+  public HatchHolder(TeleOpHatch hatch) {
     // Use requires() here to declare subsystem dependencies
     // requires(Robot_Real.m_subsystem);
+    this.hatch = hatch;
   }
 
   // Called just before this Command runs the first time
@@ -32,8 +34,10 @@ public class ElevatorCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (OI.get().getElevatorPreset1()) {
-      drive.elevatorPreset1(100);
+    if (OI.get().hatchIntake()) {
+      hatch.grabHatch(512);
+    } else {
+      hatch.placeHatch(0);
     }
   }
 

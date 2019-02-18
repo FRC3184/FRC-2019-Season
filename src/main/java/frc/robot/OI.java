@@ -44,9 +44,11 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
   private XboxController controller;
+  private XboxController controller1;
 
     private OI (){
         controller = new XboxController(0);
+        controller1 = new XboxController(1);
     }
 
     public static OI get() {
@@ -74,12 +76,44 @@ public class OI {
         return turn;
     }
     public boolean getElevatorPreset1() {
-        return controller.getBButton();
+        return controller.getXButton();
     }
 
-        public boolean getAlign() {
+    public boolean getAlign() {
         return controller.getAButton();
     }
 
+    public boolean runCargoInataake() {return controller.getBButton();}
 
+    public boolean hatchIntake() {
+        return controller.getBumper(GenericHID.Hand.kLeft);
+    }
+
+    public boolean placeHatch() {
+        return controller.getBumper(GenericHID.Hand.kRight);
+    }
+
+    public boolean wristNeutralPreset() {
+        if (controller.getPOV() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean wristUpPrset() {
+        if (controller.getPOV() == 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean ejectCargo() {
+        return controller.getYButton();
+    }
+
+    public double wristTest() {
+        return controller1.getY(GenericHID.Hand.kLeft);
+    }
 }

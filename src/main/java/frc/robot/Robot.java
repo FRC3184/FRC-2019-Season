@@ -7,16 +7,22 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.AutoTests.*;
+import frc.robot.commands.CargoHolder;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.HatchHolder;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.subsystems.TeleOpCargo;
 import frc.robot.subsystems.TeleOpDriveTrain;
 import frc.robot.subsystems.TeleOpElevator;
+import frc.robot.subsystems.TeleOpHatch;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,8 +34,12 @@ import frc.robot.subsystems.TeleOpElevator;
 public class Robot extends TimedRobot {
   private TeleOpDriveTrain teleOpDriveTrain;
   private TeleopDrive teleopDrive;
-  private TeleOpElevator TeleOpElevator;
-  private ElevatorCommand ElevatorCommand;
+  private ElevatorCommand elevatorCommand;
+  private TeleOpElevator teleOpElevator;
+  private HatchHolder hatchCommand;
+  private TeleOpHatch teleOpHatch;
+  private CargoHolder cargoCommand;
+  private TeleOpCargo teleOpCargo;
 
   private Command selectedAutoCommand;
 
@@ -42,8 +52,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Scheduler.getInstance().enable();
+
     teleOpDriveTrain = new TeleOpDriveTrain();
-    TeleOpElevator = new TeleOpElevator();
+    teleOpElevator = new TeleOpElevator();
+    teleOpHatch = new TeleOpHatch();
+    teleOpCargo = new TeleOpCargo();
+
+    teleopDrive = new TeleopDrive(teleOpDriveTrain);
+    elevatorCommand = new ElevatorCommand(teleOpElevator);
+    hatchCommand = new HatchHolder(teleOpHatch);
+    cargoCommand = new CargoHolder(teleOpCargo);
 
     m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
     m_chooser.addOption("Default Test Waypoints", new DefaultTestAutoWaypoints());
@@ -58,10 +76,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    teleopDrive = new TeleopDrive(teleOpDriveTrain);
-    ElevatorCommand = new ElevatorCommand(TeleOpElevator);
-
     teleopDrive.start();
+    elevatorCommand.start();
+    hatchCommand.start();
+    cargoCommand.start();
   }
 
   /**
@@ -77,9 +95,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-      selectedAutoCommand = m_chooser.getSelected();
+    selectedAutoCommand = m_chooser.getSelected();
 
-      selectedAutoCommand.start();
+    selectedAutoCommand.start();
+
+    teleopDrive.start();
+    elevatorCommand.start();
+    hatchCommand.start();
+    cargoCommand.start();
   }
 
   /**

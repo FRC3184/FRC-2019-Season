@@ -7,15 +7,23 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.TeleOpCargo;
 
 /**
  * An example command.  You can replace me with your own command.
  */
 public class CargoHolder extends Command {
-  public CargoHolder() {
+  TeleOpCargo cargo;
+
+  public CargoHolder(TeleOpCargo cargo) {
     // Use requires() here to declare subsystem dependencies
     // requires(Robot_Real.m_subsystem);
+
+    this.cargo = cargo;
   }
 
   // Called just before this Command runs the first time
@@ -26,6 +34,13 @@ public class CargoHolder extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if (OI.get().runCargoInataake()) {
+      cargo.intake();
+    } else if (OI.get().ejectCargo()) {
+      cargo.eject();
+    } else {
+      cargo.stop();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

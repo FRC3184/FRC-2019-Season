@@ -70,7 +70,7 @@ public class AutonomousDriveTrainDefaultWaypoints extends Subsystem {
         // Max Velocity:        1.7 m/s
         // Max Acceleration:    2.0 m/s/s
         // Max Jerk:            60.0 m/s/s/s
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.02, 3.048, .75, 60.0456);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_FAST, 0.02, 4.572, .75, 60);
 
         // Generate the trajectory
         Trajectory trajectory = Pathfinder.generate(points, config);
