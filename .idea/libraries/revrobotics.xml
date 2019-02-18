@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="revrobotics">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/libs/FRC2019Season.jar!/com/revrobotics" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
