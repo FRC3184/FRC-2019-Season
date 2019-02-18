@@ -52,7 +52,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -139,7 +138,6 @@ $RECYCLE.BIN/
 *.lnk
 
 ### Gradle ###
-.gradle
 /build/
 
 # Ignore Gradle GUI config
@@ -155,8 +153,6 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 # # VS Code Specific Java Settings
-.classpath
-.project
 .settings/
 bin/
 
