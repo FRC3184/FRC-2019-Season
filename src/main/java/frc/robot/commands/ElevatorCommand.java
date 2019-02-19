@@ -16,6 +16,7 @@ import frc.robot.subsystems.TeleOpElevator;
  */
 public class ElevatorCommand extends Command {
   TeleOpElevator drive;
+
   public ElevatorCommand(TeleOpElevator drive) {
     requires(drive);
     this.drive = drive;
@@ -33,7 +34,7 @@ public class ElevatorCommand extends Command {
   @Override
   protected void execute() {
     if (OI.get().getElevatorPreset1()) {
-      drive.elevatorPreset1(100);
+       drive.elevatorMoveToInches(24);
     }
   }
 

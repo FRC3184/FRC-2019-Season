@@ -22,7 +22,9 @@ public class TeleOpElevator extends Subsystem {
   public TalonSRX elevatorMaster;
   public TalonSRX elevatorSlave;
 
-  DifferentialDrive robotDrive;
+  static final double countsPerOSRev = 4096;
+  static final double sprocketPitchDiameter = 1.282; //IN INCHES
+  static final double countsPerInch = (countsPerOSRev/sprocketPitchDiameter);
 
   public TeleOpElevator() {
     elevatorMaster = new TalonSRX(RobotMap.leftDriveMaster);
@@ -37,24 +39,15 @@ public class TeleOpElevator extends Subsystem {
     //setDefaultCommand(new TeleopDrive());
   }
 
-  public void elevatorPreset1(int target) {
-    if (elevatorMaster.getSelectedSensorPosition()<target+10 ){elevatorMaster.set(ControlMode.PercentOutput, .25);}
-    else{elevatorMaster.set(ControlMode.PercentOutput, 0);
-    }
-  }
-  public void elevatorPreset0(int target) {
-    if (elevatorMaster.getSelectedSensorPosition()>target-10 ){elevatorMaster.set(ControlMode.PercentOutput, -0.25);}
-    else{elevatorMaster.set(ControlMode.PercentOutput, 0);
-    }
-  }
-  public void elevatorPresetGeneral(int target) {
-    if (elevatorMaster.getSelectedSensorPosition()<target ){elevatorMaster.set(ControlMode.PercentOutput, .25);}
-    else if (elevatorMaster.getSelectedSensorPosition()>target ){elevatorMaster.set(ControlMode.PercentOutput, -.25);}
-    else{elevatorMaster.set(ControlMode.PercentOutput, 0);
-    }
-  }
+  public void elevatorMoveToInches(int target) {
+    double targetTicks = (target*countsPerInch);
 
-  public void tankDrive(double leftPower, double rightPower) {
-    robotDrive.tankDrive(-leftPower, -rightPower);
+    if (elevatorMaster.getSelectedSensorPosition() < targetTicks ){
+      elevatorMaster.set(ControlMode.PercentOutput, .25);
+    } else if (elevatorMaster.getSelectedSensorPosition() > targetTicks ){
+      elevatorMaster.set(ControlMode.PercentOutput, -.25);
+    } else{
+      elevatorMaster.set(ControlMode.PercentOutput, 0);
+    }
   }
 }
