@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -16,107 +15,119 @@ import frc.robot.subsystems.TeleOpDriveTrain;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import org.opencv.core.Core;
 
 /**
  * An example command.  You can replace me with your own command.
  */
 public class TeleopDrive extends Command {
-  TeleOpDriveTrain drive;
-  AHRS nav_x;
+    TeleOpDriveTrain drive;
+    AHRS nav_x;
 
-  double KpAim;
-  double KpDistance;
-  double min_aim_command;
-  double heading_error;
-  double distance_error;
-  double steering_adjust;
-  double x;
-  double y;
-  double area;
-  double leftPower;
-  double rightPower;
-  double distance_adjust;
+    double KpAim;
+    double KpDistance;
+    double min_aim_command;
+    double z;
+    double x;
+    double xDeg;
+    double[] pos;
+    boolean firstRun = true;
 
-  public TeleopDrive(TeleOpDriveTrain drive) {
-    // Use requires() here to declare subsystem dependencies
-    requires(drive);
-    this.drive = drive;
-
-    nav_x = new AHRS(SPI.Port.kMXP);
-
-    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    KpAim = -0.1f;
-    KpDistance = -0.1f;
-    min_aim_command = 0.05f;
-
-    drive.leftMaster.setSelectedSensorPosition(0);
-    drive.rightMaster.setSelectedSensorPosition(0);
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-
-    x = tx.getDouble(0.0);
-    y = ty.getDouble(0.0);
-    area = ta.getDouble(0.0);
-
-    //post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("Left Power", leftPower);
-    SmartDashboard.putNumber("Right Power", rightPower);
-    SmartDashboard.putNumber("Left Encoder", drive.leftMaster.getSelectedSensorPosition());
-    SmartDashboard.putNumber("Right Encoder", drive.rightMaster.getSelectedSensorPosition());
-
-    if (OI.get().getAlign()) {
-      float Kp = -0.01f;
-      float min_command = 0.3f;
-
-      double heading_error = -x;
-      double steering_adjust = 0.0f;
-
-      if (x > .25f) {
-        steering_adjust = Kp*heading_error + min_command;
-      }
-      else if (x < -.25f) {
-        steering_adjust = Kp*heading_error - min_command;
-      }
-
-      leftPower = +steering_adjust;
-      rightPower = -steering_adjust;
-
-      drive.tankDrive(leftPower, rightPower);
-    } else {
-      drive.arcadeDrive(OI.get().getPower(), OI.get().getTurn());
+    public TeleopDrive(TeleOpDriveTrain drive) {
+        // Use requires() here to declare subsystem dependencies
+        requires(drive);
+        this.drive = drive;
     }
-  }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        KpAim = -0.1f;
+        KpDistance = -0.1f;
+        min_aim_command = 0.05f;
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-blaze");
+        NetworkTableEntry tx = table.getEntry("tx");
+        NetworkTableEntry tpos = table.getEntry("camtran");
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+        xDeg = tx.getDouble(0.0);
+        pos = tpos.getDoubleArray(new double[] {0,0});
+
+        z = pos[2];
+        x = pos[0];
+
+        //post to smart dashboard periodically
+        SmartDashboard.putNumber("LimelightZ", z);
+        SmartDashboard.putNumber("LimelightX", x);
+        SmartDashboard.putBoolean("Gyro Calibrated", drive.gyroCalibrated());
+        SmartDashboard.putNumber("Left Encoder", drive.getLeftEncoderPos());
+        SmartDashboard.putNumber("Right Encoder", drive.getRightEncoderPos());
+
+        if (OI.get().getAlign()) {
+            if (!drive.onTarget(xDeg) && firstRun) {
+                drive.aimAtTarget(xDeg);
+            } else if (firstRun) {
+                double angleToTarget = Math.atan(z/ x);
+
+                if (x > 0) {
+                    angleToTarget = +angleToTarget;
+                } else if ( x < 0) {
+                    angleToTarget = -angleToTarget;
+                } else {
+                    angleToTarget = 0;
+                }
+
+                SmartDashboard.putNumber("Robot rotation from target", angleToTarget);
+
+                drive.setupPath(-(z + 30) * .0254, (x) * .0254, 0 ,angleToTarget);
+
+                firstRun = false;
+            } else if (!drive.pathComplete()){
+                drive.followPath();
+            } else {
+
+            }
+
+            /**if (drive.gyroCalibrated()) {
+                if (firstRun) {
+                    double degree = Math.atan(z/x);
+
+                    SmartDashboard.putNumber("Robot offset from target", degree);
+
+                    drive.setupPath(z, x, degree);
+
+                    firstRun = false;
+                } else if (!drive.pathComplete()) {
+                    drive.followPath();
+                } else {
+                    //Manipulator decision here
+                }
+            }*/
+        } else {
+            drive.arcadeDrive(OI.get().getPower(), OI.get().getTurn());
+            firstRun = true;
+        }
+    }
+
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
+
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+        drive.letGo();
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+        end();
+    }
 }

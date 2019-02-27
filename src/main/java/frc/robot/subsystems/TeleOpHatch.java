@@ -19,37 +19,37 @@ import javax.naming.ldap.Control;
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class TeleOpHatch extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  TalonSRX motor;
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    TalonSRX motor;
 
-  public TeleOpHatch () {
-    motor = new TalonSRX(RobotMap.hatchIntake);
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
-  public void grabHatch (int target) {
-    if (motor.getSelectedSensorPosition() < target + 10) {
-      motor.set(ControlMode.PercentOutput, .5);
-    } else if (motor.getSelectedSensorPosition() > target - 10) {
-      motor.set(ControlMode.PercentOutput, -.5);
-    } else {
-      motor.set(ControlMode.PercentOutput, 0);
+    public TeleOpHatch () {
+        motor = new TalonSRX(RobotMap.hatchIntake);
     }
-  }
 
-  public void placeHatch (int target) {
-    if (motor.getSelectedSensorPosition() < target + 10) {
-      motor.set(ControlMode.PercentOutput, .5);
-    } else if (motor.getSelectedSensorPosition() > target - 10) {
-      motor.set(ControlMode.PercentOutput, -.5);
-    } else {
-      motor.set(ControlMode.PercentOutput, 0);
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
     }
-  }
+
+    public void grabHatch (int target) {
+        if (motor.getSelectedSensorPosition() < target + 10) {
+            motor.set(ControlMode.PercentOutput, .5);
+        } else if (motor.getSelectedSensorPosition() > target - 10) {
+            motor.set(ControlMode.PercentOutput, -.5);
+        } else {
+            motor.set(ControlMode.PercentOutput, 0);
+        }
+    }
+
+    public void placeHatch (int target) {
+        if (motor.getSelectedSensorPosition() < target + 10) {
+            motor.set(ControlMode.PercentOutput, .5);
+        } else if (motor.getSelectedSensorPosition() > target - 10) {
+            motor.set(ControlMode.PercentOutput, -.5);
+        } else {
+            motor.set(ControlMode.PercentOutput, 0);
+        }
+    }
 }

@@ -54,14 +54,14 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().enable();
 
     teleOpDriveTrain = new TeleOpDriveTrain();
-    teleOpElevator = new TeleOpElevator();
-    teleOpHatch = new TeleOpHatch();
-    teleOpCargo = new TeleOpCargo();
+    //teleOpElevator = new TeleOpElevator();
+    //teleOpHatch = new TeleOpHatch();
+    //teleOpCargo = new TeleOpCargo();
 
     teleopDrive = new TeleopDrive(teleOpDriveTrain);
-    elevatorCommand = new ElevatorCommand(teleOpElevator);
-    hatchCommand = new HatchHolder(teleOpHatch);
-    cargoCommand = new CargoHolder(teleOpCargo);
+    //elevatorCommand = new ElevatorCommand(teleOpElevator);
+    //hatchCommand = new HatchHolder(teleOpHatch);
+    //cargoCommand = new CargoHolder(teleOpCargo);
 
     m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
     m_chooser.addOption("Default Test Waypoints", new DefaultTestAutoWaypoints());
@@ -77,9 +77,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     teleopDrive.start();
-    elevatorCommand.start();
-    hatchCommand.start();
-    cargoCommand.start();
+    //elevatorCommand.start();
+    //hatchCommand.start();
+    //cargoCommand.start();
   }
 
   /**
@@ -99,10 +99,10 @@ public class Robot extends TimedRobot {
 
     selectedAutoCommand.start();
 
-    teleopDrive.start();
-    elevatorCommand.start();
-    hatchCommand.start();
-    cargoCommand.start();
+    //teleopDrive.start();
+    //elevatorCommand.start();
+    //hatchCommand.start();
+    //cargoCommand.start();
   }
 
   /**

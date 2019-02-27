@@ -15,6 +15,8 @@ import jaci.pathfinder.followers.EncoderFollower;
 
 import java.io.File;
 
+import static java.lang.Thread.sleep;
+
 public class AutonomousDriveTrainDefault extends Subsystem {
 
     private static final int k_ticks_per_rev = 4096;
@@ -52,15 +54,16 @@ public class AutonomousDriveTrainDefault extends Subsystem {
     }
 
     public void setupPath(String pathName) {
-        Trajectory left_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".left" + ".pf1.csv"));
-        Trajectory right_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".right" + ".pf1.csv"));
+        m_navX.zeroYaw();
+
+        Trajectory left_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".right" + ".pf1.csv"));
+        Trajectory right_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/output/" + pathName + ".left" + ".pf1.csv"));
 
         m_left_follower = new EncoderFollower(left_trajectory);
         m_right_follower = new EncoderFollower(right_trajectory);
 
         m_left_master.setSelectedSensorPosition(0);
         m_right_master.setSelectedSensorPosition(0);
-        m_navX.zeroYaw();
 
         m_left_follower.configureEncoder(getLeftEncoderPos(), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
