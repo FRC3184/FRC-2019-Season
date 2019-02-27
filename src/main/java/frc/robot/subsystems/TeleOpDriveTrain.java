@@ -53,6 +53,8 @@ public class TeleOpDriveTrain extends Subsystem {
 
     DifferentialDrive robotDrive;
 
+    double gyroOffset = 0;
+
     public TeleOpDriveTrain() {
         leftMaster = new WPI_TalonSRX(RobotMap.leftDriveMaster);
         rightMaster = new WPI_TalonSRX(RobotMap.rightDriveMaster);
@@ -81,15 +83,15 @@ public class TeleOpDriveTrain extends Subsystem {
         robotDrive.tankDrive(-leftPower, -rightPower);
     }
 
-    public void setupPath(double x, double y, double startAngle, double exitAngle) {
+    public void setupPath(double x, double y, double startAngle, double gyroOffset) {
         leftMaster.setSelectedSensorPosition(0);
         rightMaster.setSelectedSensorPosition(0);
-        m_navX.zeroYaw();
+        zeroGyro(gyroOffset);
 
         // 3 Waypoints, x (in meters), y (in meters), exit angle (radians)
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, Pathfinder.d2r(startAngle)),
-                new Waypoint(x, y, Pathfinder.d2r(exitAngle))
+                new Waypoint(x, y, Pathfinder.d2r(0))
         };
 
         // Create the Trajectory Configuration
@@ -199,11 +201,17 @@ public class TeleOpDriveTrain extends Subsystem {
         return rightMaster.getSelectedSensorPosition();
     }
 
-    public float getSelectedGyroValue() {
-        return m_navX.getYaw();
+    public double getSelectedGyroValue() {
+        return m_navX.getYaw() - gyroOffset;
     }
 
     public boolean gyroCalibrated() {
         return !m_navX.isCalibrating();
+    }
+
+    public void zeroGyro(double offset) {
+        m_navX.zeroYaw();
+
+        gyroOffset = gyroOffset - offset;
     }
 }

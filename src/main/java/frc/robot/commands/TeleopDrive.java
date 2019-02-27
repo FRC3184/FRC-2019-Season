@@ -80,9 +80,9 @@ public class TeleopDrive extends Command {
                     angleToTarget = 0;
                 }
 
-                SmartDashboard.putNumber("Robot rotation from target", angleToTarget);
+                double startingAngle = 90 - angleToTarget;
 
-                drive.setupPath(-(z + 30) * .0254, (x) * .0254, 0 ,angleToTarget);
+                drive.setupPath(-(z + 30) * .0254, (x) * .0254, 0 , angleToTarget);
 
                 firstRun = false;
             } else if (!drive.pathComplete()){
