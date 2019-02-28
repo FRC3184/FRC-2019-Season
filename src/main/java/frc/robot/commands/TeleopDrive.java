@@ -54,7 +54,7 @@ public class TeleopDrive extends Command {
         NetworkTableEntry tpos = table.getEntry("camtran");
 
         xDeg = tx.getDouble(0.0);
-        pos = tpos.getDoubleArray(new double[] {0,0});
+        pos = tpos.getDoubleArray(new double[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0});
 
         z = pos[2];
         x = pos[0];
@@ -82,7 +82,9 @@ public class TeleopDrive extends Command {
 
                 double startingAngle = 90 - angleToTarget;
 
-                drive.setupPath(-(z + 30) * .0254, (x) * .0254, 0 , angleToTarget);
+                //drive.setupPath(-(z + 30) * .0254, (x) * .0254, 0 , angleToTarget);
+
+                drive.setupPath(4, 0, 0,0);
 
                 firstRun = false;
             } else if (!drive.pathComplete()){

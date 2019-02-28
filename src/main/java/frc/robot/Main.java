@@ -25,5 +25,8 @@ public final class Main {
    */
   public static void main(String... args) {
     RobotBase.startRobot(Robot::new);
+
+    // Uncomment below and comment above to switch to Drive Train Classifier mode. Source: https://github.com/robotpy/robot-characterization
+    //RobotBase.startRobot(Robot_Classifier::new);
   }
 }

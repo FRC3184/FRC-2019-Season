@@ -55,25 +55,25 @@ public class Robot_Classifier extends TimedRobot {
 
         stick = new Joystick(0);
 
-        leftFrontMotor = new WPI_TalonSRX(0);
+        leftFrontMotor = new WPI_TalonSRX(RobotMap.leftDriveMaster);
         leftFrontMotor.setInverted(false);
         leftFrontMotor.setSensorPhase(false);
         leftFrontMotor.setNeutralMode(NeutralMode.Brake);
 
-        rightFrontMotor = new WPI_TalonSRX(1);
+        rightFrontMotor = new WPI_TalonSRX(RobotMap.rightDriveMaster);
         rightFrontMotor.setInverted(false);
         rightFrontMotor.setSensorPhase(true);
         rightFrontMotor.setNeutralMode(NeutralMode.Brake);
 
         // left rear follows front
-        WPI_VictorSPX leftRearMotor = new WPI_VictorSPX(0);
+        WPI_VictorSPX leftRearMotor = new WPI_VictorSPX(RobotMap.leftDriveSlave);
         leftRearMotor.setInverted(false);
         leftRearMotor.setSensorPhase(false);
         leftRearMotor.follow(leftFrontMotor);
         leftRearMotor.setNeutralMode(NeutralMode.Brake);
 
         // right rear follows front
-        WPI_VictorSPX rightRearMotor = new WPI_VictorSPX(1);
+        WPI_VictorSPX rightRearMotor = new WPI_VictorSPX(RobotMap.rightDriveSlave);
         rightRearMotor.setInverted(false);
         rightRearMotor.setSensorPhase(true);
         rightRearMotor.follow(rightRearMotor);
