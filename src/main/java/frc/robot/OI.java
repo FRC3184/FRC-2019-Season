@@ -45,12 +45,10 @@ public class OI {
   // button.whenReleased(new ExampleCommand());
   private XboxController controller;
   private XboxController controller1;
-  private XboxController controller2;
 
     private OI (){
         controller = new XboxController(0);
         controller1 = new XboxController(1);
-        controller2 = new XboxController(2);
     }
 
     public static OI get() {
@@ -77,20 +75,47 @@ public class OI {
 
         return turn;
     }
+    public boolean getElevatorPreset1() {
+        return controller.getXButton();
+    }
+
+    public boolean getAlign() {
+        return controller.getAButton();
+    }
+
+    public boolean runCargoIntake() {return controller.getBButton();}
+
+    public boolean hatchIntake() {
+        return controller.getBumper(GenericHID.Hand.kLeft);
+    }
+
+    public boolean placeHatch() {
+        return controller.getBumper(GenericHID.Hand.kRight);
+    }
+
+    public boolean testHatch () {return controller.getXButton();}
+
+    public boolean wristNeutralPreset() {
+        if (controller.getPOV() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean wristUpPrset() {
+        if (controller.getPOV() == 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean ejectCargo() {
+        return controller.getYButton();
+    }
 
     public double wristTest() {
         return controller1.getY(GenericHID.Hand.kLeft);
-    }
-
-    public double cargoTest() {
-        return controller1.getY(GenericHID.Hand.kRight);
-    }
-
-    public double hatchTest() {
-        return controller2.getY(GenericHID.Hand.kLeft);
-    }
-
-    public double elevatorTest() {
-        return controller2.getY(GenericHID.Hand.kRight);
     }
 }

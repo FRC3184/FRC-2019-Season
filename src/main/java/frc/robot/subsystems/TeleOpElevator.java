@@ -50,8 +50,4 @@ public class TeleOpElevator extends Subsystem {
             elevatorMaster.set(ControlMode.PercentOutput, 0);
         }
     }
-
-    public void test(double power) {
-        elevatorMaster.set(ControlMode.PercentOutput, power);
-    }
 }

@@ -40,8 +40,4 @@ public class TeleOpCargo extends Subsystem {
     public void stop() {
         motor.set(0);
     }
-
-    public void test(double power) {
-        motor.set(power);
-    }
 }

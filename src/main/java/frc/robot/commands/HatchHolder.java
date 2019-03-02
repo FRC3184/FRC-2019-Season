@@ -22,7 +22,8 @@ public class HatchHolder extends Command {
 
     public HatchHolder(TeleOpHatch hatch) {
         // Use requires() here to declare subsystem dependencies
-        // requires(Robot_Real.m_subsystem);
+        // requires(Robot_Real.m_subsystem)
+        requires(hatch);
         this.hatch = hatch;
     }
 
@@ -34,13 +35,13 @@ public class HatchHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        /**if (OI.get().hatchIntake()) {
-            hatch.grabHatch(512);
-        } else {
-            hatch.placeHatch(0);
-        }*/
-
-        hatch.test(OI.get().hatchTest());
+        //   if (OI.get().hatchIntake()) {
+        //     hatch.grabHatch(512);
+        //   } else {
+        //     hatch.placeHatch(0);
+        //   }
+        if (OI.get().testHatch()){hatch.testHatch(0.25);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

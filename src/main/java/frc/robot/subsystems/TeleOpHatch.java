@@ -53,7 +53,7 @@ public class TeleOpHatch extends Subsystem {
         }
     }
 
-    public void test (double power) {
-        motor.set(ControlMode.PercentOutput, power);
+    public void testHatch (double power) {
+         motor.set(ControlMode.PercentOutput, power) ;
     }
 }
