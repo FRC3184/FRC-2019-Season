@@ -18,10 +18,10 @@ public class Wrist extends Command {
     int preset1 = 1024;
     TeleOpWrist wrist;
 
-    public Wrist() {
+    public Wrist(TeleOpWrist wrist) {
         // Use requires() here to declare subsystem dependencies
-        // requires(Robot_Real.m_subsystem);
-        wrist = new TeleOpWrist();
+        requires(wrist);
+        this.wrist = wrist;
     }
 
     // Called just before this Command runs the first time
@@ -32,13 +32,13 @@ public class Wrist extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().wristUpPrset()) {
+        /**if (OI.get().wristUpPrset()) {
             wrist.wristToPosition(preset1);
         } else if (OI.get().wristNeutralPreset()) {
             wrist.wristToPosition(0);
-        }
+        }*/
 
-        wrist.testWrist(OI.get().wristTest());
+        wrist.test(OI.get().wristTest());
     }
 
     // Make this return true when this Command no longer needs to run execute()

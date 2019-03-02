@@ -34,13 +34,15 @@ public class CargoHolder extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (OI.get().runCargoInataake()) {
+    /**if (OI.get().runCargoInataake()) {
       cargo.intake();
     } else if (OI.get().ejectCargo()) {
       cargo.eject();
     } else {
       cargo.stop();
-    }
+    } */
+
+    cargo.test(OI.get().cargoTest());
   }
 
   // Make this return true when this Command no longer needs to run execute()

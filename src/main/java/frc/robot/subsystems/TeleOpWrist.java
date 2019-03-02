@@ -7,12 +7,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMax;
 
@@ -44,7 +40,7 @@ public class TeleOpWrist extends Subsystem {
         }
     }
 
-    public void testWrist(double power) {
+    public void test(double power) {
         wristMotor.set(power);
     }
 }

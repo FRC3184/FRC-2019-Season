@@ -17,37 +17,41 @@ import frc.robot.RobotMap;
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class TeleOpElevator extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  public TalonSRX elevatorMaster;
-  public TalonSRX elevatorSlave;
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    public TalonSRX elevatorMaster;
+    public TalonSRX elevatorSlave;
 
-  static final double countsPerOSRev = 4096;
-  static final double sprocketPitchDiameter = 1.282; //IN INCHES
-  static final double countsPerInch = (countsPerOSRev/sprocketPitchDiameter);
+    static final double countsPerOSRev = 4096;
+    static final double sprocketPitchDiameter = 1.282; //IN INCHES
+    static final double countsPerInch = (countsPerOSRev/sprocketPitchDiameter);
 
-  public TeleOpElevator() {
-    elevatorMaster = new TalonSRX(RobotMap.leftDriveMaster);
-    elevatorSlave = new TalonSRX(RobotMap.rightDriveMaster);
+    public TeleOpElevator() {
+        elevatorMaster = new TalonSRX(RobotMap.leftDriveMaster);
+        elevatorSlave = new TalonSRX(RobotMap.rightDriveMaster);
 
-    elevatorSlave.follow(elevatorMaster);
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    //setDefaultCommand(new TeleopDrive());
-  }
-
-  public void elevatorMoveToInches(int target) {
-    double targetTicks = (target*countsPerInch);
-
-    if (elevatorMaster.getSelectedSensorPosition() < targetTicks ){
-      elevatorMaster.set(ControlMode.PercentOutput, .25);
-    } else if (elevatorMaster.getSelectedSensorPosition() > targetTicks ){
-      elevatorMaster.set(ControlMode.PercentOutput, -.25);
-    } else{
-      elevatorMaster.set(ControlMode.PercentOutput, 0);
+        elevatorSlave.follow(elevatorMaster);
     }
-  }
+
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        //setDefaultCommand(new TeleopDrive());
+    }
+
+    public void elevatorMoveToInches(int target) {
+        double targetTicks = (target*countsPerInch);
+
+        if (elevatorMaster.getSelectedSensorPosition() < targetTicks ){
+            elevatorMaster.set(ControlMode.PercentOutput, .25);
+        } else if (elevatorMaster.getSelectedSensorPosition() > targetTicks ){
+            elevatorMaster.set(ControlMode.PercentOutput, -.25);
+        } else{
+            elevatorMaster.set(ControlMode.PercentOutput, 0);
+        }
+    }
+
+    public void test(double power) {
+        elevatorMaster.set(ControlMode.PercentOutput, power);
+    }
 }

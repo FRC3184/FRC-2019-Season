@@ -15,29 +15,33 @@ import frc.robot.RobotMap;
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class TeleOpCargo extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  VictorSP motor;
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    VictorSP motor;
 
-  public TeleOpCargo () {
-    motor = new VictorSP(RobotMap.cargoIntake);
-  }
+    public TeleOpCargo () {
+        motor = new VictorSP(RobotMap.cargoIntake);
+    }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+    }
 
-  public void intake() {
-    motor.set(.5);
-  }
+    public void intake() {
+        motor.set(.5);
+    }
 
-  public void eject() {
-    motor.set(-.5);
-  }
+    public void eject() {
+        motor.set(-.5);
+    }
 
-  public void stop() {
-    motor.set(0);
-  }
+    public void stop() {
+        motor.set(0);
+    }
+
+    public void test(double power) {
+        motor.set(power);
+    }
 }
