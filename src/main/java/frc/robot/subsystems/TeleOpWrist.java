@@ -19,9 +19,27 @@ public class TeleOpWrist extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     CANSparkMax wristMotor;
+    com.revrobotics.CANPIDController wristPID;
+
+    int countsPerMotorRev = 42;
+    double gearRatio = 213.33;
+    double countsPerOutputRev = countsPerMotorRev * gearRatio;
+    double countsPerDegree = countsPerOutputRev / 360;
+    double target = -123456789;
 
     public TeleOpWrist() {
         wristMotor = new CANSparkMax(RobotMap.wrist, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+        wristPID = wristMotor.getPIDController();
+
+        wristMotor.getEncoder().setPosition(0);
+
+        wristPID.setP(0);
+        wristPID.setI(0);
+        wristPID.setD(0);
+        wristPID.setFF(0);
+        wristPID.setIZone(0);
+        wristPID.setOutputRange(-.5, .5);
     }
 
     @Override
@@ -30,17 +48,24 @@ public class TeleOpWrist extends Subsystem {
         //setDefaultCommand(new TeleopDrive());
     }
 
-    public void wristToPosition(int target) {
-        if (wristMotor.getEncoder().getPosition() < target+10 ) {
-            wristMotor.set(.25);
-        } else if (wristMotor.getEncoder().getPosition() > target-10) {
-            wristMotor.set(-.25);
-        } else {
-            wristMotor.set(0);
-        }
+    public void wristToPosition(double targetDegrees) {
+        wristPID.setReference(targetDegrees * countsPerDegree, com.revrobotics.ControlType.kPosition);
+        target = targetDegrees * countsPerDegree;
     }
 
     public void test(double power) {
         wristMotor.set(power);
+    }
+
+    public double NEOEncoderPos() {
+        return wristMotor.getEncoder().getPosition();
+    }
+
+    public double targetValue() {
+        return target;
+    }
+
+    public double closedLoopError() {
+        return 123456789;
     }
 }

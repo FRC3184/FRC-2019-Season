@@ -78,6 +78,14 @@ public class OI {
         return turn;
     }
 
+    public boolean getAlign() {
+        return controller.getAButton();
+    }
+
+    public boolean wristToPos() {
+        return controller1.getBumper(GenericHID.Hand.kLeft);
+    }
+
     public double wristTest() {
         return controller1.getY(GenericHID.Hand.kLeft);
     }

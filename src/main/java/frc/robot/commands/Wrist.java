@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpWrist;
 
@@ -32,13 +33,14 @@ public class Wrist extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        /**if (OI.get().wristUpPrset()) {
-            wrist.wristToPosition(preset1);
-        } else if (OI.get().wristNeutralPreset()) {
-            wrist.wristToPosition(0);
-        }*/
+        if (OI.get().wristToPos()) {
+            wrist.wristToPosition(-90);
+        }
 
         wrist.test(OI.get().wristTest());
+
+        SmartDashboard.putNumber("Target encoder NEO", wrist.targetValue());
+        SmartDashboard.putNumber("Actual NEO", wrist.NEOEncoderPos());
     }
 
     // Make this return true when this Command no longer needs to run execute()

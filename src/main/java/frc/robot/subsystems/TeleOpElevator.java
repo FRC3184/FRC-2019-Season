@@ -27,8 +27,8 @@ public class TeleOpElevator extends Subsystem {
     static final double countsPerInch = (countsPerOSRev/sprocketPitchDiameter);
 
     public TeleOpElevator() {
-        elevatorMaster = new TalonSRX(RobotMap.leftDriveMaster);
-        elevatorSlave = new TalonSRX(RobotMap.rightDriveMaster);
+        elevatorMaster = new TalonSRX(RobotMap.elevatorMaster);
+        elevatorSlave = new TalonSRX(RobotMap.elevatorSlave);
 
         elevatorSlave.follow(elevatorMaster);
     }
