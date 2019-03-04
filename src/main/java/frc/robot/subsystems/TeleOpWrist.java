@@ -30,6 +30,8 @@ public class TeleOpWrist extends Subsystem {
     public TeleOpWrist() {
         wristMotor = new CANSparkMax(RobotMap.wrist, CANSparkMaxLowLevel.MotorType.kBrushless);
 
+        wristMotor.restoreFactoryDefaults();
+
         wristPID = wristMotor.getPIDController();
 
         wristMotor.getEncoder().setPosition(0);

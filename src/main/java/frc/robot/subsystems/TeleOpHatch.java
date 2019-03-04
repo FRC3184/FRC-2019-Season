@@ -27,6 +27,8 @@ public class TeleOpHatch extends Subsystem {
     public TeleOpHatch () {
         motor = new TalonSRX(RobotMap.hatchIntake);
 
+        motor.configFactoryDefault();
+
         motor.getSelectedSensorPosition(0);
 
         motor.config_kP(0, .00001);

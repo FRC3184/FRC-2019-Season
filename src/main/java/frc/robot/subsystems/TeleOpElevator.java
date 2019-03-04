@@ -30,6 +30,9 @@ public class TeleOpElevator extends Subsystem {
         elevatorMaster = new TalonSRX(RobotMap.elevatorMaster);
         elevatorSlave = new TalonSRX(RobotMap.elevatorSlave);
 
+        elevatorMaster.configFactoryDefault();
+        elevatorSlave.configFactoryDefault();
+
         elevatorSlave.follow(elevatorMaster);
 
         elevatorMaster.getSelectedSensorPosition(0);
@@ -38,7 +41,6 @@ public class TeleOpElevator extends Subsystem {
         elevatorMaster.config_kI(0, 0);
         elevatorMaster.config_kD(0, 0);
         elevatorMaster.config_kF(0, 0);
-
         elevatorMaster.configClosedloopRamp(.33);
     }
 
