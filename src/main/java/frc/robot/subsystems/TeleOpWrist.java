@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANPIDController;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -19,13 +20,12 @@ public class TeleOpWrist extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     CANSparkMax wristMotor;
-    com.revrobotics.CANPIDController wristPID;
+    CANPIDController wristPID;
 
     int countsPerMotorRev = 1;
     double gearRatio = 213.33;
     double countsPerOutputRev = countsPerMotorRev * gearRatio;
     double countsPerDegree = countsPerOutputRev / 360;
-    double target = -123456789;
 
     public TeleOpWrist() {
         wristMotor = new CANSparkMax(RobotMap.wrist, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -53,19 +53,10 @@ public class TeleOpWrist extends Subsystem {
 
     public void wristToPosition(double targetDegrees) {
         wristPID.setReference(targetDegrees * countsPerDegree, com.revrobotics.ControlType.kPosition);
-        target = targetDegrees * countsPerDegree;
     }
 
     public void test(double power) {
         wristMotor.set(power);
-    }
-
-    public double NEOEncoderPos() {
-        return wristMotor.getEncoder().getPosition();
-    }
-
-    public double targetValue() {
-        return target;
     }
 
     public void zero() {

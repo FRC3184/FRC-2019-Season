@@ -48,9 +48,6 @@ public class Wrist extends Command {
 
             first = true;
         }
-
-        SmartDashboard.putNumber("Target encoder NEO", wrist.targetValue());
-        SmartDashboard.putNumber("Actual NEO", wrist.NEOEncoderPos());
     }
 
     // Make this return true when this Command no longer needs to run execute()
