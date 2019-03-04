@@ -19,6 +19,8 @@ public class Wrist extends Command {
     int preset1 = 1024;
     TeleOpWrist wrist;
 
+    boolean first = true;
+
     public Wrist(TeleOpWrist wrist) {
         // Use requires() here to declare subsystem dependencies
         requires(wrist);
@@ -34,10 +36,18 @@ public class Wrist extends Command {
     @Override
     protected void execute() {
         if (OI.get().wristToPos()) {
-            wrist.wristToPosition(-90);
-        }
+            if (first) {
+                wrist.zero();
 
-        wrist.test(OI.get().wristTest());
+                first = false;
+            }
+
+            wrist.wristToPosition(90);
+        } else {
+            wrist.test(OI.get().wristTest());
+
+            first = true;
+        }
 
         SmartDashboard.putNumber("Target encoder NEO", wrist.targetValue());
         SmartDashboard.putNumber("Actual NEO", wrist.NEOEncoderPos());

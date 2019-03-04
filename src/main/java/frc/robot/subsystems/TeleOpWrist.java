@@ -24,7 +24,7 @@ public class TeleOpWrist extends Subsystem {
     int countsPerMotorRev = 42;
     double gearRatio = 213.33;
     double countsPerOutputRev = countsPerMotorRev * gearRatio;
-    double countsPerDegree = countsPerOutputRev / 360;
+    double countsPerDegree = 50.0/90;
     double target = -123456789;
 
     public TeleOpWrist() {
@@ -34,12 +34,13 @@ public class TeleOpWrist extends Subsystem {
 
         wristMotor.getEncoder().setPosition(0);
 
-        wristPID.setP(0);
+        wristPID.setP(.075);
         wristPID.setI(0);
         wristPID.setD(0);
         wristPID.setFF(0);
         wristPID.setIZone(0);
-        wristPID.setOutputRange(-.5, .5);
+        wristPID.setOutputRange(-1.0, 1.0);
+        wristMotor.setClosedLoopRampRate(.33);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class TeleOpWrist extends Subsystem {
         return target;
     }
 
-    public double closedLoopError() {
-        return 123456789;
+    public void zero() {
+        wristMotor.getEncoder().setPosition(0);
     }
 }

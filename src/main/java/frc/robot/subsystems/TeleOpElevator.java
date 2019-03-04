@@ -31,6 +31,15 @@ public class TeleOpElevator extends Subsystem {
         elevatorSlave = new TalonSRX(RobotMap.elevatorSlave);
 
         elevatorSlave.follow(elevatorMaster);
+
+        elevatorMaster.getSelectedSensorPosition(0);
+
+        elevatorMaster.config_kP(0, .00001);
+        elevatorMaster.config_kI(0, 0);
+        elevatorMaster.config_kD(0, 0);
+        elevatorMaster.config_kF(0, 0);
+
+        elevatorMaster.configClosedloopRamp(.33);
     }
 
     @Override
@@ -42,13 +51,7 @@ public class TeleOpElevator extends Subsystem {
     public void elevatorMoveToInches(int target) {
         double targetTicks = (target*countsPerInch);
 
-        if (elevatorMaster.getSelectedSensorPosition() < targetTicks ){
-            elevatorMaster.set(ControlMode.PercentOutput, .25);
-        } else if (elevatorMaster.getSelectedSensorPosition() > targetTicks ){
-            elevatorMaster.set(ControlMode.PercentOutput, -.25);
-        } else{
-            elevatorMaster.set(ControlMode.PercentOutput, 0);
-        }
+        elevatorMaster.set(ControlMode.Position, targetTicks);
     }
 
     public void test(double power) {

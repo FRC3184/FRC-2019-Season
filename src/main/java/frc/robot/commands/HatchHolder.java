@@ -34,13 +34,11 @@ public class HatchHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        /**if (OI.get().hatchIntake()) {
-            hatch.grabHatch(512);
+        if (OI.get().hatchToPos()) {
+            hatch.hatchToDegrees(90);
         } else {
-            hatch.placeHatch(0);
-        }*/
-
-        hatch.test(OI.get().hatchTest());
+            hatch.test(OI.get().hatchTest());
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

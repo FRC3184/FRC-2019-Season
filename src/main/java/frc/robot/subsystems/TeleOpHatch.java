@@ -11,9 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchHolder;
-
-import javax.naming.ldap.Control;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -23,8 +20,21 @@ public class TeleOpHatch extends Subsystem {
     // here. Call these from Commands.
     TalonSRX motor;
 
+    static final double countsPerOSRev = 4096;
+    static final double chainReduction = 18.0/22; //IN INCHES
+    static final double countsPerDegree = (countsPerOSRev * chainReduction) / 360;
+
     public TeleOpHatch () {
         motor = new TalonSRX(RobotMap.hatchIntake);
+
+        motor.getSelectedSensorPosition(0);
+
+        motor.config_kP(0, .00001);
+        motor.config_kI(0, 0);
+        motor.config_kD(0, 0);
+        motor.config_kF(0, 0);
+
+        motor.configClosedloopRamp(.33);
     }
 
     @Override
@@ -33,24 +43,10 @@ public class TeleOpHatch extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public void grabHatch (int target) {
-        if (motor.getSelectedSensorPosition() < target + 10) {
-            motor.set(ControlMode.PercentOutput, .5);
-        } else if (motor.getSelectedSensorPosition() > target - 10) {
-            motor.set(ControlMode.PercentOutput, -.5);
-        } else {
-            motor.set(ControlMode.PercentOutput, 0);
-        }
-    }
+    public void hatchToDegrees(double target) {
+        double targetTicks = (target* countsPerDegree);
 
-    public void placeHatch (int target) {
-        if (motor.getSelectedSensorPosition() < target + 10) {
-            motor.set(ControlMode.PercentOutput, .5);
-        } else if (motor.getSelectedSensorPosition() > target - 10) {
-            motor.set(ControlMode.PercentOutput, -.5);
-        } else {
-            motor.set(ControlMode.PercentOutput, 0);
-        }
+        motor.set(ControlMode.Position, targetTicks);
     }
 
     public void test (double power) {

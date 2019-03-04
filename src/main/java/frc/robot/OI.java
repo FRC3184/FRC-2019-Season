@@ -86,6 +86,14 @@ public class OI {
         return controller1.getBumper(GenericHID.Hand.kLeft);
     }
 
+    public boolean elevatorToPos() {
+        return controller2.getBumper(GenericHID.Hand.kRight);
+    }
+
+    public boolean hatchToPos() {
+        return  controller2.getBumper(GenericHID.Hand.kLeft);
+    }
+
     public double wristTest() {
         return controller1.getY(GenericHID.Hand.kLeft);
     }
