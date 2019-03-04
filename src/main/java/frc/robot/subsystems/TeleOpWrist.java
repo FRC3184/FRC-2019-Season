@@ -21,10 +21,10 @@ public class TeleOpWrist extends Subsystem {
     CANSparkMax wristMotor;
     com.revrobotics.CANPIDController wristPID;
 
-    int countsPerMotorRev = 42;
+    int countsPerMotorRev = 1;
     double gearRatio = 213.33;
     double countsPerOutputRev = countsPerMotorRev * gearRatio;
-    double countsPerDegree = 50.0/90;
+    double countsPerDegree = countsPerOutputRev / 360;
     double target = -123456789;
 
     public TeleOpWrist() {
