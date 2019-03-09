@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMax;
@@ -52,7 +53,7 @@ public class TeleOpWrist extends Subsystem {
     }
 
     public void wristToPosition(double targetDegrees) {
-        wristPID.setReference(targetDegrees * countsPerDegree, com.revrobotics.ControlType.kPosition);
+        wristPID.setReference(targetDegrees * countsPerDegree, ControlType.kPosition);
     }
 
     public void test(double power) {

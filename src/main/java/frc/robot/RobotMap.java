@@ -29,7 +29,7 @@ public class RobotMap {
     public static int cargoIntake = 0;
     public static int hatchIntake = 4;
 
-    public static int wrist = 0;
+    public static int wrist = 1;
 
     public static SPI.Port gyroPort = SPI.Port.kMXP;
 

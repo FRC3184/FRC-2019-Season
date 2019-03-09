@@ -44,12 +44,10 @@ public class OI {
   // button.whenReleased(new ExampleCommand());
   private XboxController controller;
   private XboxController controller1;
-  private XboxController controller2;
 
     private OI (){
         controller = new XboxController(0);
         controller1 = new XboxController(1);
-        controller2 = new XboxController(2);
     }
 
     public static OI get() {
@@ -81,34 +79,6 @@ public class OI {
         return controller.getBButton();
     }
 
-    public boolean wristToPos() {
-        return controller1.getBumper(GenericHID.Hand.kLeft);
-    }
-
-    public boolean elevatorToPos() {
-        return controller2.getBumper(GenericHID.Hand.kRight);
-    }
-
-    public boolean hatchToPos() {
-        return  controller2.getBumper(GenericHID.Hand.kLeft);
-    }
-
-    public double wristTest() {
-        return controller1.getY(GenericHID.Hand.kLeft);
-    }
-
-    public double cargoTest() {
-        return controller1.getY(GenericHID.Hand.kRight);
-    }
-
-    public double hatchTest() {
-        return controller2.getY(GenericHID.Hand.kLeft);
-    }
-
-    public double elevatorTest() {
-        return controller2.getY(GenericHID.Hand.kRight);
-    }
-
     public double elevatorHatchLow (){
         return controller1.getTriggerAxis(GenericHID.Hand.kLeft);
     }
@@ -137,12 +107,12 @@ public class OI {
         return controller1.getBumper(GenericHID.Hand.kRight);
     }
 
-    public double elevatorCargoHP (){
-        return controller1.getTriggerAxis(GenericHID.Hand.kLeft);
-    }
-
-    public boolean elevatorEmergencyMode (){
-        return controller1.getStickButton(GenericHID.Hand.kRight);
+    public boolean elevatorCargoHP () {
+        if (controller1.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.1){
+           return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean wristGround () {
@@ -150,11 +120,11 @@ public class OI {
     }
 
     public boolean wristStowed () {
-        return controller.getXButton();
+        return controller.getYButton();
     }
 
     public boolean wristHatch () {
-        return controller.getYButton();
+        return controller.getXButton();
     }
 
     public boolean cargoIntake () {

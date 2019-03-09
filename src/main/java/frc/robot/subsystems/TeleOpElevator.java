@@ -30,8 +30,6 @@ public class TeleOpElevator extends Subsystem {
     static final double countsPerInchBeforeCascade = (countsPerOSRev/sprocketPitchDiameter);
     static final double countsPerInchAfterCascade = (countsPerOSRev/(sprocketPitchDiameter * 2));
 
-    double target = 0;
-
     public TeleOpElevator() {
         elevatorMaster = new TalonSRX(RobotMap.elevatorMaster);
         elevatorSlave = new TalonSRX(RobotMap.elevatorSlave);

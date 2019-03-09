@@ -16,7 +16,6 @@ import frc.robot.subsystems.TeleOpWrist;
  * An example command.  You can replace me with your own command.
  */
 public class Wrist extends Command {
-    int preset1 = 1024;
     TeleOpWrist wrist;
 
     boolean first = true;
@@ -39,6 +38,8 @@ public class Wrist extends Command {
             wrist.wristToPosition(0);
         } else if (OI.get().wristStowed()) {
             wrist.wristToPosition(90);
+        } else if (OI.get().wristHatch()) {
+            wrist.wristToPosition(29);
         }
     }
 
