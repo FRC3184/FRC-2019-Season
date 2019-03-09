@@ -11,9 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchHolder;
-
-import javax.naming.ldap.Control;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -21,10 +18,27 @@ import javax.naming.ldap.Control;
 public class TeleOpHatch extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    TalonSRX motor;
+    public TalonSRX motor;
+
+    static final double countsPerOSRev = 4096.0;
+    static final double chainReduction = 22.0/18;
+    static final double countsPerDegree = (countsPerOSRev / 360) * chainReduction;
 
     public TeleOpHatch () {
         motor = new TalonSRX(RobotMap.hatchIntake);
+
+        zero();
+
+        motor.configFactoryDefault();
+
+        motor.setSensorPhase(true);
+
+        motor.config_kP(0, 1.5);
+        motor.config_kI(0, 0);
+        motor.config_kD(0, 50);
+        motor.config_kF(0, 0);
+
+        motor.configClosedloopRamp(.33);
     }
 
     @Override
@@ -33,27 +47,17 @@ public class TeleOpHatch extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public void grabHatch (int target) {
-        if (motor.getSelectedSensorPosition() < target + 10) {
-            motor.set(ControlMode.PercentOutput, .5);
-        } else if (motor.getSelectedSensorPosition() > target - 10) {
-            motor.set(ControlMode.PercentOutput, -.5);
-        } else {
-            motor.set(ControlMode.PercentOutput, 0);
-        }
-    }
+    public void hatchToDegrees(double target) {
+        double targetTicks = (target * countsPerDegree);
 
-    public void placeHatch (int target) {
-        if (motor.getSelectedSensorPosition() < target + 10) {
-            motor.set(ControlMode.PercentOutput, .5);
-        } else if (motor.getSelectedSensorPosition() > target - 10) {
-            motor.set(ControlMode.PercentOutput, -.5);
-        } else {
-            motor.set(ControlMode.PercentOutput, 0);
-        }
+        motor.set(ControlMode.Position, -targetTicks);
     }
 
     public void testHatch (double power) {
          motor.set(ControlMode.PercentOutput, power) ;
+    }
+
+    public  void zero() {
+        motor.setSelectedSensorPosition(0);
     }
 }

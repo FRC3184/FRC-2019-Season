@@ -61,6 +61,11 @@ public class TeleOpDriveTrain extends Subsystem {
         leftSlave = new VictorSPX(RobotMap.leftDriveSlave);
         rightSlave = new VictorSPX(RobotMap.rightDriveSlave);
 
+        leftMaster.configFactoryDefault();
+        rightMaster.configFactoryDefault();
+        leftSlave.configFactoryDefault();
+        rightSlave.configFactoryDefault();
+
         leftSlave.follow(leftMaster);
         rightSlave.follow(rightMaster);
 

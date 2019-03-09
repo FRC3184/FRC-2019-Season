@@ -10,6 +10,7 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.TeleOpHatch;
@@ -20,10 +21,11 @@ import frc.robot.subsystems.TeleOpHatch;
 public class HatchHolder extends Command {
     TeleOpHatch hatch;
 
+    boolean first = true;
+
     public HatchHolder(TeleOpHatch hatch) {
         // Use requires() here to declare subsystem dependencies
-        // requires(Robot_Real.m_subsystem)
-        requires(hatch);
+        // requires(Robot_Real.m_subsystem);
         this.hatch = hatch;
     }
 
@@ -35,13 +37,21 @@ public class HatchHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        //   if (OI.get().hatchIntake()) {
-        //     hatch.grabHatch(512);
-        //   } else {
-        //     hatch.placeHatch(0);
-        //   }
-        if (OI.get().testHatch()){hatch.testHatch(0.25);
+        if (OI.get().hatchToPos()) {
+            if (first) {
+                hatch.zero();
+
+                first = false;
+            }
+
+            hatch.hatchToDegrees(55);
+        } else {
+            hatch.test(OI.get().hatchTest());
+
+            first = true;
         }
+
+        SmartDashboard.putNumber("Hatch Closed Loop", hatch.motor.getClosedLoopError());
     }
 
     // Make this return true when this Command no longer needs to run execute()
