@@ -42,7 +42,7 @@ public class Wrist extends Command {
                 first = false;
             }
 
-            wrist.wristToPosition(90);
+            wrist.wristToPosition(55);
         } else {
             wrist.test(OI.get().wristTest());
 

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpElevator;
 
@@ -34,10 +35,12 @@ public class ElevatorCommand extends Command {
     @Override
     protected void execute() {
         if (OI.get().elevatorToPos()) {
-            drive.elevatorMoveToInches(12);
+            drive.elevatorMoveToInches(20);
         } else {
             drive.test(OI.get().elevatorTest());
         }
+
+        SmartDashboard.putNumber("Elevator Encoder", drive.elevatorMaster.getSelectedSensorPosition());
     }
 
     // Make this return true when this Command no longer needs to run execute()

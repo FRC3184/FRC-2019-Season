@@ -18,22 +18,24 @@ import frc.robot.RobotMap;
 public class TeleOpHatch extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    TalonSRX motor;
+    public TalonSRX motor;
 
-    static final double countsPerOSRev = 4096;
-    static final double chainReduction = 18.0/22; //IN INCHES
-    static final double countsPerDegree = (countsPerOSRev * chainReduction) / 360;
+    static final double countsPerOSRev = 4096.0;
+    static final double chainReduction = 22.0/18;
+    static final double countsPerDegree = (countsPerOSRev / 360) * chainReduction;
 
     public TeleOpHatch () {
         motor = new TalonSRX(RobotMap.hatchIntake);
 
+        zero();
+
         motor.configFactoryDefault();
 
-        motor.getSelectedSensorPosition(0);
+        motor.setSensorPhase(true);
 
-        motor.config_kP(0, .00001);
+        motor.config_kP(0, 1.5);
         motor.config_kI(0, 0);
-        motor.config_kD(0, 0);
+        motor.config_kD(0, 50);
         motor.config_kF(0, 0);
 
         motor.configClosedloopRamp(.33);
@@ -46,12 +48,16 @@ public class TeleOpHatch extends Subsystem {
     }
 
     public void hatchToDegrees(double target) {
-        double targetTicks = (target* countsPerDegree);
+        double targetTicks = (target * countsPerDegree);
 
-        motor.set(ControlMode.Position, targetTicks);
+        motor.set(ControlMode.Position, -targetTicks);
     }
 
     public void test (double power) {
         motor.set(ControlMode.PercentOutput, power);
+    }
+
+    public  void zero() {
+        motor.setSelectedSensorPosition(0);
     }
 }

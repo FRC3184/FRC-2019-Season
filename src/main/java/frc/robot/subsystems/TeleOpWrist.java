@@ -36,9 +36,9 @@ public class TeleOpWrist extends Subsystem {
 
         wristMotor.getEncoder().setPosition(0);
 
-        wristPID.setP(.075);
+        wristPID.setP(.070);
         wristPID.setI(0);
-        wristPID.setD(0);
+        wristPID.setD(2);
         wristPID.setFF(0);
         wristPID.setIZone(0);
         wristPID.setOutputRange(-1.0, 1.0);
