@@ -53,7 +53,15 @@ public class TeleOpWrist extends Subsystem {
     }
 
     public void wristToPosition(double targetDegrees) {
-        wristPID.setReference(targetDegrees * countsPerDegree, ControlType.kPosition);
+        wristPID.setReference(-targetDegrees * countsPerDegree, ControlType.kPosition);
+    }
+
+    public void testSwitches() {
+        if (elevatorLimitSwitches.isFwdLimitSwitchClosed()) {
+            elevatorMaster.setSelectedSensorPosition(0);
+        } else if (elevatorLimitSwitches.isRevLimitSwitchClosed()) {
+            wristMotor.getEncoder().setPosition(inchesToDegrees(topInches));
+        }
     }
 
     public void test(double power) {

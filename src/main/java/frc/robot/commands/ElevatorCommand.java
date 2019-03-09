@@ -34,25 +34,25 @@ public class ElevatorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().elevatorCargoMid()) {
-            drive.elevatorMoveToInches(20);
-        } else if (OI.get().elevatorHatchLow() >= .5) {
-            drive.elevatorMoveToInches(0);
-        } else if (OI.get().elevatorCargoHigh()) {
-            drive.elevatorMoveToInches(40);
-        } else if (OI.get().elevatorCargoLow()) {
-            drive.elevatorMoveToInches(5);
-        } else if (OI.get().elevatorCargoMid()) {
-            drive.elevatorMoveToInches(27);
-        } else if (OI.get().elevatorHatchMid()) {
-            drive.elevatorMoveToInches(22);
-        } else if (OI.get().elevatorHatchHigh()) {
-            drive.elevatorMoveToInches(35);
-        } else if (OI.get().elevatorCargoHP()) {
+        if (OI.get().elevatorCargoHP()) {
             drive.elevatorMoveToInches(15);
         } else if (OI.get().elevatorCargoShip()) {
             drive.elevatorMoveToInches(10);
+        } else if (OI.get().elevatorHatchLow()) {
+            drive.elevatorMoveToInches(20);
+        } else if (OI.get().elevatorHatchMid()) {
+            drive.elevatorMoveToInches(0);
+        } else if (OI.get().elevatorHatchHigh()) {
+            drive.elevatorMoveToInches(40);
+        } else if (OI.get().elevatorCargoLow()) {
+            drive.elevatorMoveToInches(13);
+        } else if (OI.get().elevatorCargoMid()) {
+            drive.elevatorMoveToInches(27);
+        } else if (OI.get().elevatorCargoHigh()) {
+            drive.elevatorMoveToInches(22);
         }
+
+        drive.testSwitches();
     }
     // Make this return true when this Command no longer needs to run execute()
     @Override

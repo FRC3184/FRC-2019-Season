@@ -59,18 +59,20 @@ public class TeleOpElevator extends Subsystem {
     }
 
     public void elevatorMoveToInches(double target) {
-        if (elevatorLimitSwitches.isFwdLimitSwitchClosed()) {
-            target = 0;
-        } else if (elevatorLimitSwitches.isRevLimitSwitchClosed()) {
-            target = topInches;
-        }
-
         double targetTicks = -inchesToTicks(target);
 
         elevatorMaster.set(ControlMode.Position, targetTicks);
     }
 
-    double inchesToTicks(double inches) {
+    public void testSwitches() {
+        if (elevatorLimitSwitches.isFwdLimitSwitchClosed()) {
+            elevatorMaster.setSelectedSensorPosition(0);
+        } else if (elevatorLimitSwitches.isRevLimitSwitchClosed()) {
+            elevatorMaster.setSelectedSensorPosition(inchesToTicks(topInches));
+        }
+    }
+
+    int inchesToTicks(double inches) {
         double ticks;
 
         if (inches <= cascadeOffset) {
@@ -79,7 +81,7 @@ public class TeleOpElevator extends Subsystem {
             ticks = ((inches - cascadeOffset) * countsPerInchAfterCascade) + (cascadeOffset * countsPerInchBeforeCascade);
         }
 
-        return ticks;
+        return (int)ticks;
     }
 
     public void test(double power) {

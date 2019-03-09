@@ -38,12 +38,12 @@ public class HatchHolder extends Command {
     @Override
     protected void execute() {
         if (OI.get().hatchGrab()) {
-            hatch.hatchToDegrees(-315);
+            hatch.hatchToDegrees(315);
 
             first = true;
         } else if (OI.get().placeHatch()) {
             if (first) {
-                hatch.hatchToDegrees(-90);
+                hatch.hatchToDegrees(90);
 
                 first = false;
             } else {

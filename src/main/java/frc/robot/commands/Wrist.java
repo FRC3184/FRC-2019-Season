@@ -35,11 +35,11 @@ public class Wrist extends Command {
     @Override
     protected void execute() {
         if (OI.get().wristGround()) {
-            wrist.wristToPosition(0);
-        } else if (OI.get().wristStowed()) {
             wrist.wristToPosition(90);
+        } else if (OI.get().wristStowed()) {
+            wrist.wristToPosition(0);
         } else if (OI.get().wristHatch()) {
-            wrist.wristToPosition(29);
+            wrist.wristToPosition(61);
         }
     }
 

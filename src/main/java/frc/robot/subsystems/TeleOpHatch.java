@@ -50,7 +50,7 @@ public class TeleOpHatch extends Subsystem {
     public void hatchToDegrees(double target) {
         double targetTicks = (target * countsPerDegree);
 
-        motor.set(ControlMode.Position, -targetTicks);
+        motor.set(ControlMode.Position, targetTicks);
     }
 
     public void testHatch (double power) {

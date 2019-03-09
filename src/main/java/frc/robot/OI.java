@@ -79,8 +79,12 @@ public class OI {
         return controller.getBButton();
     }
 
-    public double elevatorHatchLow (){
-        return controller1.getTriggerAxis(GenericHID.Hand.kLeft);
+    public boolean elevatorHatchLow (){
+        if (controller1.getTriggerAxis(GenericHID.Hand.kLeft) >= .1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean elevatorHatchMid (){
