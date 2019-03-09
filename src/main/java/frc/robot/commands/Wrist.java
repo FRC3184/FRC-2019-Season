@@ -35,18 +35,10 @@ public class Wrist extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().wristToPos()) {
-            if (first) {
-                wrist.zero();
-
-                first = false;
-            }
-
-            wrist.wristToPosition(55);
-        } else {
-            wrist.test(OI.get().wristTest());
-
-            first = true;
+        if (OI.get().wristGround()) {
+            wrist.wristToPosition(0);
+        } else if (OI.get().wristStowed()) {
+            wrist.wristToPosition(90);
         }
     }
 

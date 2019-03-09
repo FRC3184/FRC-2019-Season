@@ -30,6 +30,8 @@ public class TeleOpElevator extends Subsystem {
     static final double countsPerInchBeforeCascade = (countsPerOSRev/sprocketPitchDiameter);
     static final double countsPerInchAfterCascade = (countsPerOSRev/(sprocketPitchDiameter * 2));
 
+    double target = 0;
+
     public TeleOpElevator() {
         elevatorMaster = new TalonSRX(RobotMap.elevatorMaster);
         elevatorSlave = new TalonSRX(RobotMap.elevatorSlave);
@@ -41,7 +43,7 @@ public class TeleOpElevator extends Subsystem {
 
         elevatorSlave.follow(elevatorMaster);
 
-        zero();
+        elevatorMaster.setSelectedSensorPosition(0);
 
         elevatorMaster.setSensorPhase(true);
 
@@ -70,14 +72,6 @@ public class TeleOpElevator extends Subsystem {
         elevatorMaster.set(ControlMode.Position, targetTicks);
     }
 
-    public void test(double power) {
-        elevatorMaster.set(ControlMode.PercentOutput, power);
-    }
-
-    public void zero() {
-        elevatorMaster.setSelectedSensorPosition(0);
-    }
-
     double inchesToTicks(double inches) {
         double ticks;
 
@@ -88,5 +82,9 @@ public class TeleOpElevator extends Subsystem {
         }
 
         return ticks;
+    }
+
+    public void test(double power) {
+        elevatorMaster.set(ControlMode.PercentOutput, power);
     }
 }

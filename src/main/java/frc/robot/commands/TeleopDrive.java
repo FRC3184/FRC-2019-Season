@@ -89,25 +89,20 @@ public class TeleopDrive extends Command {
                 firstRun = false;
             } else if (!drive.pathComplete()){
                 drive.followPath();
-            } else {
-
             }
 
-            /**if (drive.gyroCalibrated()) {
-                if (firstRun) {
-                    double degree = Math.atan(z/x);
-
-                    SmartDashboard.putNumber("Robot offset from target", degree);
-
-                    drive.setupPath(z, x, degree);
-
-                    firstRun = false;
-                } else if (!drive.pathComplete()) {
-                    drive.followPath();
-                } else {
-                    //Manipulator decision here
-                }
-            }*/
+            /*if (drive.gyroCalibrated()) {
+             if (firstRun) {
+             double degree = Math.atan(z/x);
+             SmartDashboard.putNumber("Robot offset from target", degree);
+             drive.setupPath(z, x, degree);
+             firstRun = false;
+             } else if (!drive.pathComplete()) {
+             drive.followPath();
+             } else {
+             //Manipulator decision here
+             }
+             }*/
         } else {
             drive.arcadeDrive(OI.get().getPower(), OI.get().getTurn());
             firstRun = true;

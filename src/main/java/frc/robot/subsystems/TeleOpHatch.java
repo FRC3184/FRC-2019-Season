@@ -27,11 +27,11 @@ public class TeleOpHatch extends Subsystem {
     public TeleOpHatch () {
         motor = new TalonSRX(RobotMap.hatchIntake);
 
-        zero();
-
         motor.configFactoryDefault();
 
         motor.setSensorPhase(true);
+
+        motor.setSelectedSensorPosition(0);
 
         motor.config_kP(0, 1.5);
         motor.config_kI(0, 0);
@@ -55,9 +55,5 @@ public class TeleOpHatch extends Subsystem {
 
     public void testHatch (double power) {
          motor.set(ControlMode.PercentOutput, power) ;
-    }
-
-    public  void zero() {
-        motor.setSelectedSensorPosition(0);
     }
 }

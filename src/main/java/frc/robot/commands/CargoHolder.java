@@ -17,48 +17,46 @@ import frc.robot.subsystems.TeleOpCargo;
  * An example command.  You can replace me with your own command.
  */
 public class CargoHolder extends Command {
-  TeleOpCargo cargo;
+    TeleOpCargo cargo;
 
-  public CargoHolder(TeleOpCargo cargo) {
-    // Use requires() here to declare subsystem dependencies
-    // requires(Robot_Real.m_subsystem);
+    public CargoHolder(TeleOpCargo cargo) {
+        // Use requires() here to declare subsystem dependencies
+        // requires(Robot_Real.m_subsystem);
 
-    this.cargo = cargo;
-  }
+        this.cargo = cargo;
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    /**if (OI.get().runCargoInataake()) {
-      cargo.intake();
-    } else if (OI.get().ejectCargo()) {
-      cargo.eject();
-    } else {
-      cargo.stop();
-    } */
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        if (OI.get().cargoIntake()) {
+            cargo.run(.5);
+        } else if (OI.get().cargoOutput()) {
+            cargo.run(-.5);
+        } else {
+            cargo.run(0);
+        }
+    }
 
-    cargo.test(OI.get().cargoTest());
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }

@@ -8,7 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -79,7 +78,7 @@ public class OI {
     }
 
     public boolean getAlign() {
-        return controller.getAButton();
+        return controller.getBButton();
     }
 
     public boolean wristToPos() {
@@ -108,5 +107,77 @@ public class OI {
 
     public double elevatorTest() {
         return controller2.getY(GenericHID.Hand.kRight);
+    }
+
+    public double elevatorHatchLow (){
+        return controller1.getTriggerAxis(GenericHID.Hand.kLeft);
+    }
+
+    public boolean elevatorHatchMid (){
+        return controller1.getAButton();
+    }
+
+    public boolean elevatorHatchHigh (){
+        return controller1.getBButton();
+    }
+
+    public boolean elevatorCargoLow (){
+        return controller1.getBumper(GenericHID.Hand.kLeft);
+    }
+
+    public boolean elevatorCargoMid (){
+        return controller1.getXButton();
+    }
+
+    public boolean elevatorCargoHigh (){
+        return controller1.getYButton();
+    }
+
+    public boolean elevatorCargoShip (){
+        return controller1.getBumper(GenericHID.Hand.kRight);
+    }
+
+    public double elevatorCargoHP (){
+        return controller1.getTriggerAxis(GenericHID.Hand.kLeft);
+    }
+
+    public boolean elevatorEmergencyMode (){
+        return controller1.getStickButton(GenericHID.Hand.kRight);
+    }
+
+    public boolean wristGround () {
+        return controller.getAButton();
+    }
+
+    public boolean wristStowed () {
+        return controller.getXButton();
+    }
+
+    public boolean wristHatch () {
+        return controller.getYButton();
+    }
+
+    public boolean cargoIntake () {
+        if (controller.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.1){
+           return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean cargoOutput () {
+        if (controller.getTriggerAxis(GenericHID.Hand.kRight) >= 0.1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean hatchGrab () {
+        return controller.getBumper(GenericHID.Hand.kLeft);
+    }
+
+    public boolean placeHatch () {
+        return controller.getBumper(GenericHID.Hand.kRight);
     }
 }

@@ -29,15 +29,7 @@ public class TeleOpCargo extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public void intake() {
-        motor.set(.5);
-    }
-
-    public void eject() {
-        motor.set(-.5);
-    }
-
-    public void stop() {
-        motor.set(0);
+    public void run(double power) {
+        motor.set(power);
     }
 }

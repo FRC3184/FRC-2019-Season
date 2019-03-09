@@ -37,21 +37,19 @@ public class HatchHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().hatchToPos()) {
-            if (first) {
-                hatch.zero();
-
-                first = false;
-            }
-
-            hatch.hatchToDegrees(55);
-        } else {
-            hatch.test(OI.get().hatchTest());
+        if (OI.get().hatchGrab()) {
+            hatch.hatchToDegrees(180);
 
             first = true;
-        }
+        } else if (OI.get().placeHatch()) {
+            if (first) {
+                hatch.hatchToDegrees(90);
 
-        SmartDashboard.putNumber("Hatch Closed Loop", hatch.motor.getClosedLoopError());
+                first = false;
+            } else {
+                hatch.hatchToDegrees(0);
+            }
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
