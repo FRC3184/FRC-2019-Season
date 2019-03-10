@@ -45,9 +45,21 @@ public class OI {
   private XboxController controller;
   private XboxController controller1;
 
+  private int layer = 0;
+
     private OI (){
         controller = new XboxController(0);
         controller1 = new XboxController(1);
+    }
+
+    public void updateLayerShift() {
+        if (controller.getBumper(GenericHID.Hand.kLeft)) {
+            layer = 0;
+        } else if (controller.getBumper(GenericHID.Hand.kRight)) {
+            layer = 1;
+        } else if (controller.getTriggerAxis(GenericHID.Hand.kRight) >= .1) {
+            layer = 2;
+        }
     }
 
     public static OI get() {
@@ -153,5 +165,53 @@ public class OI {
 
     public boolean placeHatch () {
         return controller.getBumper(GenericHID.Hand.kRight);
+    }
+
+    public double testHatch() {
+        if (layer == 2) {
+            return controller.getY(GenericHID.Hand.kRight);
+        } else {
+            return 0;
+        }
+    }
+
+    public double testoCargo() {
+        if (layer == 2) {
+            return controller.getY(GenericHID.Hand.kLeft);
+        } else {
+            return 0;
+        }
+    }
+
+    public double testWrist() {
+        if (layer == 1) {
+            return controller.getY(GenericHID.Hand.kLeft);
+        } else {
+            return 0;
+        }
+    }
+
+    public double testElevator() {
+        if (layer == 1) {
+            return controller.getY(GenericHID.Hand.kRight);
+        } else {
+            return 0;
+        }
+    }
+
+    public double testPower() {
+        if (layer == 0) {
+            return controller.getY(GenericHID.Hand.kLeft);
+        } else {
+            return 0;
+        }
+    }
+
+    public double testTurn() {
+        if (layer == 0) {
+            return controller.getX(GenericHID.Hand.kRight);
+        } else {
+            return 0;
+        }
     }
 }
