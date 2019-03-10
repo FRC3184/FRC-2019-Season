@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpWrist;
 
@@ -16,9 +15,7 @@ import frc.robot.subsystems.TeleOpWrist;
  * An example command.  You can replace me with your own command.
  */
 public class Wrist extends Command {
-    TeleOpWrist wrist;
-
-    boolean first = true;
+    private TeleOpWrist wrist;
 
     public Wrist(TeleOpWrist wrist) {
         // Use requires() here to declare subsystem dependencies
@@ -41,6 +38,8 @@ public class Wrist extends Command {
         } else if (OI.get().wristHatch()) {
             wrist.wristToPosition(61);
         }
+
+        wrist.testSwitches();
     }
 
     // Make this return true when this Command no longer needs to run execute()

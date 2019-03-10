@@ -7,12 +7,10 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.ControlType;
+import com.revrobotics.*;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANPIDController;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -22,11 +20,16 @@ public class TeleOpWrist extends Subsystem {
     // here. Call these from Commands.
     CANSparkMax wristMotor;
     CANPIDController wristPID;
+    CANDigitalInput forwardLimit;
+    CANDigitalInput reverseLimit;
 
     int countsPerMotorRev = 1;
     double gearRatio = 213.33;
     double countsPerOutputRev = countsPerMotorRev * gearRatio;
     double countsPerDegree = countsPerOutputRev / 360;
+
+    double maxDegrees = 90;
+    double rearMax = -0;
 
     public TeleOpWrist() {
         wristMotor = new CANSparkMax(RobotMap.wrist, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -35,7 +38,10 @@ public class TeleOpWrist extends Subsystem {
 
         wristPID = wristMotor.getPIDController();
 
-        wristMotor.getEncoder().setPosition(0);
+        forwardLimit = wristMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+        reverseLimit = wristMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+
+        wristMotor.getEncoder().setPosition(degreesToTicks(rearMax));
 
         wristPID.setP(.070);
         wristPID.setI(0);
@@ -57,11 +63,15 @@ public class TeleOpWrist extends Subsystem {
     }
 
     public void testSwitches() {
-        if (elevatorLimitSwitches.isFwdLimitSwitchClosed()) {
-            elevatorMaster.setSelectedSensorPosition(0);
-        } else if (elevatorLimitSwitches.isRevLimitSwitchClosed()) {
-            wristMotor.getEncoder().setPosition(inchesToDegrees(topInches));
+        if (forwardLimit.get()) {
+            wristMotor.getEncoder().setPosition(degreesToTicks(rearMax));
+        } else if (reverseLimit.get()) {
+            wristMotor.getEncoder().setPosition(degreesToTicks(maxDegrees));
         }
+    }
+
+    double degreesToTicks(double degrees) {
+        return degrees * countsPerDegree;
     }
 
     public void test(double power) {
