@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpElevator;
 
@@ -16,11 +15,11 @@ import frc.robot.subsystems.TeleOpElevator;
  * An example command.  You can replace me with your own command.
  */
 public class ElevatorCommand extends Command {
-    TeleOpElevator drive;
+    TeleOpElevator elevator;
 
-    public ElevatorCommand(TeleOpElevator drive) {
-        requires(drive);
-        this.drive = drive;
+    public ElevatorCommand(TeleOpElevator elevator) {
+        requires(elevator);
+        this.elevator = elevator;
 
         // Use requires() here to declare subsystem dependencies
         // requires(Robot_Real.m_subsystem);
@@ -35,24 +34,24 @@ public class ElevatorCommand extends Command {
     @Override
     protected void execute() {
         if (OI.get().elevatorCargoHP()) {
-            drive.elevatorMoveToInches(15);
+            elevator.elevatorMoveToInches(15);
         } else if (OI.get().elevatorCargoShip()) {
-            drive.elevatorMoveToInches(10);
+            elevator.elevatorMoveToInches(10);
         } else if (OI.get().elevatorHatchLow()) {
-            drive.elevatorMoveToInches(20);
+            elevator.elevatorMoveToInches(20);
         } else if (OI.get().elevatorHatchMid()) {
-            drive.elevatorMoveToInches(0);
+            elevator.elevatorMoveToInches(0);
         } else if (OI.get().elevatorHatchHigh()) {
-            drive.elevatorMoveToInches(40);
+            elevator.elevatorMoveToInches(40);
         } else if (OI.get().elevatorCargoLow()) {
-            drive.elevatorMoveToInches(13);
+            elevator.elevatorMoveToInches(13);
         } else if (OI.get().elevatorCargoMid()) {
-            drive.elevatorMoveToInches(27);
+            elevator.elevatorMoveToInches(27);
         } else if (OI.get().elevatorCargoHigh()) {
-            drive.elevatorMoveToInches(22);
+            elevator.elevatorMoveToInches(22);
         }
 
-        drive.testSwitches();
+        elevator.testSwitches();
     }
     // Make this return true when this Command no longer needs to run execute()
     @Override

@@ -82,7 +82,7 @@ public class TeleopDrive extends Command {
 
                 double startingAngle = 90 - angleToTarget;
 
-                //drive.setupPath(-(z + 30) * .0254, (x) * .0254, 0 , angleToTarget);
+                //elevator.setupPath(-(z + 30) * .0254, (x) * .0254, 0 , angleToTarget);
 
                 drive.setupPath(4, 0, 0,0);
 
@@ -91,14 +91,14 @@ public class TeleopDrive extends Command {
                 drive.followPath();
             }
 
-            /*if (drive.gyroCalibrated()) {
+            /*if (elevator.gyroCalibrated()) {
              if (firstRun) {
              double degree = Math.atan(z/x);
              SmartDashboard.putNumber("Robot offset from target", degree);
-             drive.setupPath(z, x, degree);
+             elevator.setupPath(z, x, degree);
              firstRun = false;
-             } else if (!drive.pathComplete()) {
-             drive.followPath();
+             } else if (!elevator.pathComplete()) {
+             elevator.followPath();
              } else {
              //Manipulator decision here
              }
