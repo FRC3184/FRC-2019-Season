@@ -5,28 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.test;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.TeleOpHatch;
+import frc.robot.subsystems.TeleOpElevator;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class HatchHolder extends Command {
-    TeleOpHatch hatch;
+public class ElevatorTest extends Command {
+    TeleOpElevator elevator;
 
-    boolean first = true;
+    public ElevatorTest(TeleOpElevator elevator) {
+        requires(elevator);
+        this.elevator = elevator;
 
-    public HatchHolder(TeleOpHatch hatch) {
         // Use requires() here to declare subsystem dependencies
         // requires(Robot_Real.m_subsystem);
-        this.hatch = hatch;
     }
 
     // Called just before this Command runs the first time
@@ -37,21 +33,12 @@ public class HatchHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().hatchGrab()) {
-            hatch.hatchToDegrees(315);
+        elevator.test(OI.get().testElevator());
 
-            first = true;
-        } else if (OI.get().placeHatch()) {
-            if (first) {
-                hatch.hatchToDegrees(90);
+        OI.get().updateLayerShift();
 
-                first = false;
-            } else {
-                hatch.hatchToDegrees(0);
-            }
-        }
+        elevator.testSwitches();
     }
-
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
@@ -67,5 +54,6 @@ public class HatchHolder extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

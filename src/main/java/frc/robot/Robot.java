@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -16,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.AutoTests.*;
 import frc.robot.commands.*;
+import frc.robot.commands.test.*;
 import frc.robot.subsystems.*;
 
 /**
@@ -27,14 +26,19 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
     private TeleOpDriveTrain teleOpDriveTrain;
+    private DriveTest driveTest;
     private TeleopDrive teleopDrive;
     private ElevatorCommand elevatorCommand;
+    private ElevatorTest elevatorTest;
     private TeleOpElevator teleOpElevator;
-    private HatchHolder hatchCommand;
+    private HatchCommand hatchCommand;
+    private HatchTest hatchTest;
     private TeleOpHatch teleOpHatch;
-    private CargoHolder cargoCommand;
+    private CargoCommand cargoCommand;
+    private CargoTest cargoTest;
     private TeleOpCargo teleOpCargo;
-    private Wrist wristCommand;
+    private WristCommand wristCommand;
+    private WristTest wristTest;
     private TeleOpWrist teleOpWrist;
 
     private Command selectedAutoCommand;
@@ -56,10 +60,15 @@ public class Robot extends TimedRobot {
         teleOpWrist = new TeleOpWrist();
 
         teleopDrive = new TeleopDrive(teleOpDriveTrain);
+        driveTest = new DriveTest(teleOpDriveTrain);
         elevatorCommand = new ElevatorCommand(teleOpElevator);
-        hatchCommand = new HatchHolder(teleOpHatch);
-        cargoCommand = new CargoHolder(teleOpCargo);
-        wristCommand = new Wrist(teleOpWrist);
+        elevatorTest = new ElevatorTest(teleOpElevator);
+        hatchCommand = new HatchCommand(teleOpHatch);
+        hatchTest = new HatchTest(teleOpHatch);
+        cargoCommand = new CargoCommand(teleOpCargo);
+        cargoTest = new CargoTest(teleOpCargo);
+        wristCommand = new WristCommand(teleOpWrist);
+        wristTest = new WristTest(teleOpWrist);
 
         m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
         m_chooser.addOption("Default Test Waypoints", new DefaultTestAutoWaypoints());
@@ -69,7 +78,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-
+        driveTest.start();
+        elevatorTest.start();
+        hatchTest.start();
+        cargoTest.start();
+        wristTest.start();
     }
 
     @Override

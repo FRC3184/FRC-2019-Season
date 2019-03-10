@@ -5,22 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.test;
+package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.TeleOpWrist;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.TeleOpHatch;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class Wrist extends Command {
-    private TeleOpWrist wrist;
+public class HatchCommand extends Command {
+    TeleOpHatch hatch;
 
-    public Wrist(TeleOpWrist wrist) {
+    boolean first = true;
+
+    public HatchCommand(TeleOpHatch hatch) {
         // Use requires() here to declare subsystem dependencies
-        requires(wrist);
-        this.wrist = wrist;
+        // requires(Robot_Real.m_subsystem);
+        this.hatch = hatch;
     }
 
     // Called just before this Command runs the first time
@@ -31,11 +37,19 @@ public class Wrist extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        wrist.test(OI.get().testWrist());
+        if (OI.get().hatchGrab()) {
+            hatch.hatchToDegrees(315);
 
-        OI.get().updateLayerShift();
+            first = true;
+        } else if (OI.get().placeHatch()) {
+            if (first) {
+                hatch.hatchToDegrees(90);
 
-        wrist.testSwitches();
+                first = false;
+            } else {
+                hatch.hatchToDegrees(0);
+            }
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

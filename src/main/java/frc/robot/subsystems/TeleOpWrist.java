@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.*;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -18,10 +19,10 @@ import frc.robot.RobotMap;
 public class TeleOpWrist extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    CANSparkMax wristMotor;
+    public CANSparkMax wristMotor;
     CANPIDController wristPID;
-    CANDigitalInput forwardLimit;
-    CANDigitalInput reverseLimit;
+    public DigitalInput reverseSwitch;
+    public DigitalInput forwardSwitch;
 
     int countsPerMotorRev = 1;
     double gearRatio = 213.33;
@@ -34,12 +35,12 @@ public class TeleOpWrist extends Subsystem {
     public TeleOpWrist() {
         wristMotor = new CANSparkMax(RobotMap.wrist, CANSparkMaxLowLevel.MotorType.kBrushless);
 
+        reverseSwitch = new DigitalInput(RobotMap.wristLimitSwitchReverse);
+        forwardSwitch = new DigitalInput(RobotMap.wristLimitSwitchForward);
+
         wristMotor.restoreFactoryDefaults();
 
         wristPID = wristMotor.getPIDController();
-
-        forwardLimit = wristMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-        reverseLimit = wristMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 
         wristMotor.getEncoder().setPosition(degreesToTicks(rearMax));
 
@@ -48,14 +49,14 @@ public class TeleOpWrist extends Subsystem {
         wristPID.setD(2);
         wristPID.setFF(0);
         wristPID.setIZone(0);
-        wristPID.setOutputRange(-1.0, 1.0);
+        wristPID.setOutputRange(-.1, .1);
         wristMotor.setClosedLoopRampRate(.33);
     }
 
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new TeleopDrive());
+        //setDefaultCommand(new DriveTest());
     }
 
     public void wristToPosition(double targetDegrees) {
@@ -63,15 +64,17 @@ public class TeleOpWrist extends Subsystem {
     }
 
     public void testSwitches() {
-        if (forwardLimit.get()) {
+        if (forwardSwitch.get()) {
             wristMotor.getEncoder().setPosition(degreesToTicks(rearMax));
-        } else if (reverseLimit.get()) {
+            wristMotor.stopMotor();
+        } else if (reverseSwitch.get()) {
             wristMotor.getEncoder().setPosition(degreesToTicks(maxDegrees));
+            wristMotor.stopMotor();
         }
     }
 
     double degreesToTicks(double degrees) {
-        return degrees * countsPerDegree;
+        return -degrees * countsPerDegree;
     }
 
     public void test(double power) {

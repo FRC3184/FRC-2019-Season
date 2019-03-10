@@ -19,7 +19,7 @@ import frc.robot.subsystems.TeleOpDriveTrain;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class TeleopDrive extends Command {
+public class DriveTest extends Command {
     TeleOpDriveTrain drive;
     AHRS nav_x;
 
@@ -32,7 +32,7 @@ public class TeleopDrive extends Command {
     double[] pos;
     boolean firstRun = true;
 
-    public TeleopDrive(TeleOpDriveTrain drive) {
+    public DriveTest(TeleOpDriveTrain drive) {
         // Use requires() here to declare subsystem dependencies
         requires(drive);
         this.drive = drive;

@@ -9,20 +9,18 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.TeleOpHatch;
+import frc.robot.subsystems.TeleOpWrist;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class HatchHolder extends Command {
-    TeleOpHatch hatch;
+public class WristTest extends Command {
+    private TeleOpWrist wrist;
 
-    boolean first = true;
-
-    public HatchHolder(TeleOpHatch hatch) {
+    public WristTest(TeleOpWrist wrist) {
         // Use requires() here to declare subsystem dependencies
-        // requires(Robot_Real.m_subsystem);
-        this.hatch = hatch;
+        requires(wrist);
+        this.wrist = wrist;
     }
 
     // Called just before this Command runs the first time
@@ -33,9 +31,11 @@ public class HatchHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        hatch.testHatch(OI.get().testHatch());
+        wrist.test(OI.get().testWrist());
 
         OI.get().updateLayerShift();
+
+        wrist.testSwitches();
     }
 
     // Make this return true when this Command no longer needs to run execute()

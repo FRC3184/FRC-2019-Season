@@ -33,6 +33,9 @@ public class RobotMap {
 
     public static SPI.Port gyroPort = SPI.Port.kMXP;
 
+    public static int wristLimitSwitchReverse = 0;
+    public static int wristLimitSwitchForward = 1;
+
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;

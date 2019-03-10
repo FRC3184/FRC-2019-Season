@@ -5,24 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.test;
+package frc.robot.commands;
 
+import com.revrobotics.CANDigitalInput;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.TeleOpElevator;
+import frc.robot.subsystems.TeleOpWrist;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class ElevatorCommand extends Command {
-    TeleOpElevator elevator;
+public class WristCommand extends Command {
+    private TeleOpWrist wrist;
 
-    public ElevatorCommand(TeleOpElevator elevator) {
-        requires(elevator);
-        this.elevator = elevator;
-
+    public WristCommand(TeleOpWrist wrist) {
         // Use requires() here to declare subsystem dependencies
-        // requires(Robot_Real.m_subsystem);
+        requires(wrist);
+        this.wrist = wrist;
     }
 
     // Called just before this Command runs the first time
@@ -33,12 +33,20 @@ public class ElevatorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        elevator.test(OI.get().testElevator());
+        if (OI.get().wristGround()) {
+            wrist.wristToPosition(90);
+        } else if (OI.get().wristStowed()) {
+            wrist.wristToPosition(0);
+        } else if (OI.get().wristHatch()) {
+            wrist.wristToPosition(61);
+        }
 
-        OI.get().updateLayerShift();
+        wrist.testSwitches();
 
-        elevator.testSwitches();
+        SmartDashboard.putBoolean("NEO Switch reverse", wrist.reverseSwitch.get());
+        SmartDashboard.putBoolean("NEO Switch forward", wrist.forwardSwitch.get());
     }
+
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
@@ -54,6 +62,5 @@ public class ElevatorCommand extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        end();
     }
 }

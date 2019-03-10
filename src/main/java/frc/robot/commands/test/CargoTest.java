@@ -5,22 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.TeleOpWrist;
+import frc.robot.subsystems.TeleOpCargo;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class Wrist extends Command {
-    private TeleOpWrist wrist;
+public class CargoTest extends Command {
+    TeleOpCargo cargo;
 
-    public Wrist(TeleOpWrist wrist) {
+    public CargoTest(TeleOpCargo cargo) {
         // Use requires() here to declare subsystem dependencies
-        requires(wrist);
-        this.wrist = wrist;
+        // requires(Robot_Real.m_subsystem);
+
+        this.cargo = cargo;
     }
 
     // Called just before this Command runs the first time
@@ -31,15 +32,9 @@ public class Wrist extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().wristGround()) {
-            wrist.wristToPosition(90);
-        } else if (OI.get().wristStowed()) {
-            wrist.wristToPosition(0);
-        } else if (OI.get().wristHatch()) {
-            wrist.wristToPosition(61);
-        }
+        cargo.run(OI.get().testoCargo());
 
-        wrist.testSwitches();
+        OI.get().updateLayerShift();
     }
 
     // Make this return true when this Command no longer needs to run execute()

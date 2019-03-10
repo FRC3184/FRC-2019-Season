@@ -5,19 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.test;
+package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.TeleOpCargo;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class CargoHolder extends Command {
+public class CargoCommand extends Command {
     TeleOpCargo cargo;
 
-    public CargoHolder(TeleOpCargo cargo) {
+    public CargoCommand(TeleOpCargo cargo) {
         // Use requires() here to declare subsystem dependencies
         // requires(Robot_Real.m_subsystem);
 
@@ -32,9 +34,13 @@ public class CargoHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        cargo.run(OI.get().testoCargo());
-
-        OI.get().updateLayerShift();
+        if (OI.get().cargoIntake()) {
+            cargo.run(.5);
+        } else if (OI.get().cargoOutput()) {
+            cargo.run(-.5);
+        } else {
+            cargo.run(0);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

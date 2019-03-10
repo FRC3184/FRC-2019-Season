@@ -5,25 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.test;
 
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.TeleOpCargo;
+import frc.robot.subsystems.TeleOpHatch;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class CargoHolder extends Command {
-    TeleOpCargo cargo;
+public class HatchTest extends Command {
+    TeleOpHatch hatch;
 
-    public CargoHolder(TeleOpCargo cargo) {
+    boolean first = true;
+
+    public HatchTest(TeleOpHatch hatch) {
         // Use requires() here to declare subsystem dependencies
         // requires(Robot_Real.m_subsystem);
-
-        this.cargo = cargo;
+        this.hatch = hatch;
     }
 
     // Called just before this Command runs the first time
@@ -34,13 +33,9 @@ public class CargoHolder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().cargoIntake()) {
-            cargo.run(.5);
-        } else if (OI.get().cargoOutput()) {
-            cargo.run(-.5);
-        } else {
-            cargo.run(0);
-        }
+        hatch.testHatch(OI.get().testHatch());
+
+        OI.get().updateLayerShift();
     }
 
     // Make this return true when this Command no longer needs to run execute()
