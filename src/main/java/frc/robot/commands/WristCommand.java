@@ -42,9 +42,6 @@ public class WristCommand extends Command {
         }
 
         wrist.testSwitches();
-
-        SmartDashboard.putBoolean("NEO Switch reverse", wrist.reverseSwitch.get());
-        SmartDashboard.putBoolean("NEO Switch forward", wrist.forwardSwitch.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()

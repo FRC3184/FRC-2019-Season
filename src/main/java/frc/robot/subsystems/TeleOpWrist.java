@@ -29,6 +29,7 @@ public class TeleOpWrist extends Subsystem {
     double countsPerOutputRev = countsPerMotorRev * gearRatio;
     double countsPerDegree = countsPerOutputRev / 360;
 
+    static final double maxPower = .1;
     double maxDegrees = 90;
     double rearMax = -0;
 
@@ -49,7 +50,7 @@ public class TeleOpWrist extends Subsystem {
         wristPID.setD(2);
         wristPID.setFF(0);
         wristPID.setIZone(0);
-        wristPID.setOutputRange(-.1, .1);
+        wristPID.setOutputRange(-maxPower, maxPower);
         wristMotor.setClosedLoopRampRate(.33);
     }
 
@@ -64,12 +65,14 @@ public class TeleOpWrist extends Subsystem {
     }
 
     public void testSwitches() {
-        if (forwardSwitch.get()) {
+        if (!forwardSwitch.get()) {
             wristMotor.getEncoder().setPosition(degreesToTicks(rearMax));
-            wristMotor.stopMotor();
-        } else if (reverseSwitch.get()) {
+            wristPID.setOutputRange(-maxPower, 0);
+        } else if (!reverseSwitch.get()) {
             wristMotor.getEncoder().setPosition(degreesToTicks(maxDegrees));
-            wristMotor.stopMotor();
+            wristPID.setOutputRange(0, maxPower);
+        } else {
+            wristPID.setOutputRange(-maxPower, maxPower);
         }
     }
 

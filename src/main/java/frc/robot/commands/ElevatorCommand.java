@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpElevator;
 
@@ -34,24 +35,29 @@ public class ElevatorCommand extends Command {
     @Override
     protected void execute() {
         if (OI.get().elevatorCargoHP()) {
-            elevator.elevatorMoveToInches(15);
+            elevator.elevatorMoveToInches(12);
         } else if (OI.get().elevatorCargoShip()) {
-            elevator.elevatorMoveToInches(10);
+            elevator.elevatorMoveToInches(38);
         } else if (OI.get().elevatorHatchLow()) {
-            elevator.elevatorMoveToInches(20);
-        } else if (OI.get().elevatorHatchMid()) {
             elevator.elevatorMoveToInches(0);
-        } else if (OI.get().elevatorHatchHigh()) {
-            elevator.elevatorMoveToInches(40);
-        } else if (OI.get().elevatorCargoLow()) {
-            elevator.elevatorMoveToInches(13);
+        } else if (OI.get().elevatorHatchMid()) {
+            elevator.elevatorMoveToInches(29.5);
+        } /**else if (OI.get().elevatorHatchHigh()) {
+            elevator.elevatorMoveToInches(57.5);
+        }*/ else if (OI.get().elevatorCargoLow()) {
+            elevator.elevatorMoveToInches(13.5);
         } else if (OI.get().elevatorCargoMid()) {
-            elevator.elevatorMoveToInches(27);
-        } else if (OI.get().elevatorCargoHigh()) {
-            elevator.elevatorMoveToInches(22);
-        }
+            elevator.elevatorMoveToInches(41.5);
+        } /**else if (OI.get().elevatorCargoHigh()) {
+            elevator.elevatorMoveToInches(69.5);
+        }*/
 
         elevator.testSwitches();
+
+        SmartDashboard.putBoolean("Elevator Switch reverse", elevator.reverseLimitSwitch.get());
+        SmartDashboard.putBoolean("Elevator Switch forward", elevator.forwardLimitSwitch.get());
+        SmartDashboard.putNumber("Elevator Encoder", elevator.elevatorMaster.getSelectedSensorPosition());
+        SmartDashboard.putNumber("elevator target", elevator.targetT);
     }
     // Make this return true when this Command no longer needs to run execute()
     @Override

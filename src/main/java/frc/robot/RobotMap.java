@@ -35,6 +35,8 @@ public class RobotMap {
 
     public static int wristLimitSwitchReverse = 0;
     public static int wristLimitSwitchForward = 1;
+    public static int elevatorLimitSwitchReverse = 2;
+    public static int elevatorLimitSwitchForward = 3;
 
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

@@ -124,7 +124,7 @@ public class OI {
     }
 
     public boolean elevatorCargoHP () {
-        if (controller1.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.1){
+        if (controller1.getTriggerAxis(GenericHID.Hand.kRight) >= 0.1){
            return true;
         } else {
             return false;
