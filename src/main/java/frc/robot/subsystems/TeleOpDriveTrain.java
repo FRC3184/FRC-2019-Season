@@ -110,7 +110,7 @@ public class TeleOpDriveTrain extends Subsystem {
         // Max Velocity:        1.7 m/s
         // Max Acceleration:    2.0 m/s/s
         // Max Jerk:            60.0 m/s/s/s
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_FAST, deltaTime, maxVelocity, maxAcceleration, maxJerk);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, deltaTime, maxVelocity, maxAcceleration, maxJerk);
 
         // Generate the trajectory
         Trajectory trajectory = Pathfinder.generate(points, config);
