@@ -58,6 +58,11 @@ public class ElevatorCommand extends Command {
         SmartDashboard.putBoolean("Elevator Switch forward", elevator.forwardLimitSwitch.get());
         SmartDashboard.putNumber("Elevator Encoder", elevator.elevatorMaster.getSelectedSensorPosition());
         SmartDashboard.putNumber("elevator target", elevator.targetT);
+
+        SmartDashboard.putNumber("Elevator Master Voltage", elevator.elevatorMaster.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Elevator Slave Voltage", elevator.elevatorSlave.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Elevator Master Amperage", elevator.elevatorMaster.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Slave Amperage", elevator.elevatorSlave.getOutputCurrent());
     }
     // Make this return true when this Command no longer needs to run execute()
     @Override
