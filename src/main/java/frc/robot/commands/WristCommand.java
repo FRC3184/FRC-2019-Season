@@ -42,7 +42,7 @@ public class WristCommand extends Command {
 
         wrist.testSwitches();
 
-        SmartDashboard.putBoolean("Wrist switch", wrist.reverseSwitch.get());
+        SmartDashboard.putBoolean("Wrist Reverse Switch", wrist.reverseSwitch.get());
         SmartDashboard.putBoolean("Wrist Forward Switch", wrist.forwardSwitch.get());
     }
 

@@ -85,8 +85,8 @@ public class TeleOpDriveTrain extends Subsystem {
         double leftPower = power - turn;
         double rightPower = power + turn;
 
-        leftMaster.set(ControlMode.Velocity, range(leftPower, -2.0, 2.0, minPower, maxPower));
-        rightMaster.set(ControlMode.Velocity, -range(rightPower, -2.0, 2.0, minPower, maxPower));
+        leftMaster.set(ControlMode.PercentOutput, range(leftPower, -2.0, 2.0, minPower, maxPower));
+        rightMaster.set(ControlMode.PercentOutput, -range(rightPower, -2.0, 2.0, minPower, maxPower));
     }
 
     public void tankDrive(double leftPower, double rightPower) {

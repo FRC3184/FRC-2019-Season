@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpHatch;
 
@@ -48,6 +49,9 @@ public class HatchCommand extends Command {
                 hatch.hatchToDegrees(0);
             }
         }
+
+        SmartDashboard.putBoolean("Hatch Forward Limit", hatch.forwardLimitSwitch.get());
+        SmartDashboard.putBoolean("Hatch Reverse Limit", hatch.reverseLimitSwitch.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()

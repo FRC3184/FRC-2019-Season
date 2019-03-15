@@ -56,8 +56,6 @@ public class ElevatorCommand extends Command {
 
         SmartDashboard.putBoolean("Elevator Switch reverse", elevator.reverseLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator Switch forward", elevator.forwardLimitSwitch.get());
-        SmartDashboard.putNumber("Elevator Encoder", elevator.elevatorMaster.getSelectedSensorPosition());
-        SmartDashboard.putNumber("elevator target", elevator.targetT);
 
         /**SmartDashboard.putNumber("Elevator Master Voltage", elevator.elevatorMaster.getMotorOutputVoltage());
         SmartDashboard.putNumber("Elevator Slave Voltage", elevator.elevatorSlave.getMotorOutputVoltage());
