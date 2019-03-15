@@ -7,17 +7,17 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.RobotMap;
 import frc.robot.subsystems.TeleOpCargo;
 
 /**
  * An example command.  You can replace me with your own command.
  */
 public class CargoCommand extends Command {
-    TeleOpCargo cargo;
+    private TeleOpCargo cargo;
+
+    private static final double speed = .1;
 
     public CargoCommand(TeleOpCargo cargo) {
         // Use requires() here to declare subsystem dependencies
@@ -35,9 +35,9 @@ public class CargoCommand extends Command {
     @Override
     protected void execute() {
         if (OI.get().cargoIntake()) {
-            cargo.run(.5);
+            cargo.run(speed);
         } else if (OI.get().cargoOutput()) {
-            cargo.run(-.5);
+            cargo.run(-speed);
         } else {
             cargo.run(0);
         }

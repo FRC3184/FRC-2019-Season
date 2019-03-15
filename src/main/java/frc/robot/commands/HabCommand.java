@@ -8,21 +8,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.TeleOpHatch;
+import frc.robot.subsystems.TeleOpHab;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class HatchCommand extends Command {
-    private TeleOpHatch hatch;
+public class HabCommand extends Command {
+    private TeleOpHab hab;
 
-    private boolean first = true;
+    private static final double drivePower = .5;
+    private static final double turnPower = .2;
+    private static final double flipperDeployedDegrees = 100;
 
-    public HatchCommand(TeleOpHatch hatch) {
+    public HabCommand(TeleOpHab hab) {
         // Use requires() here to declare subsystem dependencies
         // requires(Robot_Real.m_subsystem);
-        this.hatch = hatch;
+
+        this.hab = hab;
     }
 
     // Called just before this Command runs the first time
@@ -33,21 +37,37 @@ public class HatchCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().hatchGrab()) {
-            hatch.hatchToDegrees(315);
+        double power = 0;
+        double turn = 0;
 
-            first = true;
-        } else if (OI.get().placeHatch()) {
-            if (first) {
-                hatch.hatchToDegrees(90);
-
-                if (!OI.get().placeHatch()) {
-                    first = false;
-                }
-            } else {
-                hatch.hatchToDegrees(0);
-            }
+        if (OI.get().habRetract()) {
+            hab.wristToPosition(0);
+        } else if (OI.get().habDeploy()) {
+            hab.wristToPosition(flipperDeployedDegrees);
         }
+
+        if (OI.get().habDriveForward()) {
+            power = drivePower;
+        }
+
+        if (OI.get().habDriveBackwords()) {
+            power = -drivePower;
+        }
+
+        if (OI.get().habLeft()) {
+            turn = turnPower;
+        }
+
+        if (OI.get().habRight()) {
+            turn = -turnPower;
+        }
+
+        hab.habDrive(power, turn);
+
+        hab.testSwitches();
+
+        SmartDashboard.putBoolean("Flipper Limit Reverse", hab.reverseSwitch.get());
+        SmartDashboard.putBoolean("Flipper Limit Forward", hab.forwardSwitch.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()

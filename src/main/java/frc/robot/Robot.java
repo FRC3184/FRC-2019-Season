@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
     private WristCommand wristCommand;
     private WristTest wristTest;
     private TeleOpWrist teleOpWrist;
+    private HabCommand habCommand;
+    private TeleOpHab teleOpHab;
 
     private Command selectedAutoCommand;
 
@@ -58,6 +60,7 @@ public class Robot extends TimedRobot {
         teleOpHatch = new TeleOpHatch();
         teleOpCargo = new TeleOpCargo();
         teleOpWrist = new TeleOpWrist();
+        teleOpHab = new TeleOpHab();
 
         teleopDrive = new TeleopDrive(teleOpDriveTrain);
         driveTest = new DriveTest(teleOpDriveTrain);
@@ -69,11 +72,12 @@ public class Robot extends TimedRobot {
         cargoTest = new CargoTest(teleOpCargo);
         wristCommand = new WristCommand(teleOpWrist);
         wristTest = new WristTest(teleOpWrist);
+        habCommand = new HabCommand(teleOpHab);
 
-        m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
+        /**m_chooser.setDefaultOption("Default Test", new DefaultTestAuto());
         m_chooser.addOption("Default Test Waypoints", new DefaultTestAutoWaypoints());
 
-        SmartDashboard.putData("Auto mode select", m_chooser);
+        SmartDashboard.putData("Auto mode select", m_chooser);*/
     }
 
     @Override
@@ -92,6 +96,7 @@ public class Robot extends TimedRobot {
         hatchCommand.start();
         cargoCommand.start();
         wristCommand.start();
+        habCommand.start();
     }
 
     /**
@@ -116,6 +121,7 @@ public class Robot extends TimedRobot {
         hatchCommand.start();
         cargoCommand.start();
         wristCommand.start();
+        habCommand.start();
     }
 
     /**

@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.CANDigitalInput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -38,10 +37,13 @@ public class WristCommand extends Command {
         } else if (OI.get().wristStowed()) {
             wrist.wristToPosition(0);
         } else if (OI.get().wristHatch()) {
-            wrist.wristToPosition(61);
+            wrist.wristToPosition(66);
         }
 
         wrist.testSwitches();
+
+        SmartDashboard.putBoolean("Wrist switch", wrist.reverseSwitch.get());
+        SmartDashboard.putBoolean("Wrist Forward Switch", wrist.forwardSwitch.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()

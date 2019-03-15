@@ -8,12 +8,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
@@ -22,18 +20,20 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
-import java.nio.file.Path;
-
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class TeleOpDriveTrain extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private WPI_TalonSRX leftMaster;
-    private WPI_TalonSRX rightMaster;
-    VictorSPX leftSlave;
-    VictorSPX rightSlave;
+    private TalonSRX leftMaster;
+    private TalonSRX rightMaster;
+    private VictorSPX leftSlave;
+    private VictorSPX rightSlave;
+
+    private static final double minPower = .1;
+    private static final double maxPower = .1;
+    private static final double rampRate = .25;
 
     private static final int ticksPerRev = 4096; //Ticks per output shaft revolution
     private static final double wheelDiameter = 0.1524; //Meters
@@ -49,15 +49,13 @@ public class TeleOpDriveTrain extends Subsystem {
     private EncoderFollower leftFollower;
     private EncoderFollower rightFollower;
 
-    boolean finished = false;
+    private boolean finished = false;
 
-    DifferentialDrive robotDrive;
-
-    double gyroOffset = 0;
+    private double gyroOffset = 0;
 
     public TeleOpDriveTrain() {
-        leftMaster = new WPI_TalonSRX(RobotMap.leftDriveMaster);
-        rightMaster = new WPI_TalonSRX(RobotMap.rightDriveMaster);
+        leftMaster = new TalonSRX(RobotMap.leftDriveMaster);
+        rightMaster = new TalonSRX(RobotMap.rightDriveMaster);
         leftSlave = new VictorSPX(RobotMap.leftDriveSlave);
         rightSlave = new VictorSPX(RobotMap.rightDriveSlave);
 
@@ -69,7 +67,8 @@ public class TeleOpDriveTrain extends Subsystem {
         leftSlave.follow(leftMaster);
         rightSlave.follow(rightMaster);
 
-        robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+        leftMaster.configOpenloopRamp(rampRate);
+        rightMaster.configOpenloopRamp(rampRate);
 
         m_navX = new AHRS(RobotMap.gyroPort);
     }
@@ -81,11 +80,18 @@ public class TeleOpDriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(double power, double turn) {
-        robotDrive.arcadeDrive(-power, turn);
+        //robotDrive.arcadeDrive(-power, turn, true);
+
+        double leftPower = power - turn;
+        double rightPower = power + turn;
+
+        leftMaster.set(ControlMode.Velocity, range(leftPower, -2.0, 2.0, minPower, maxPower));
+        rightMaster.set(ControlMode.Velocity, -range(rightPower, -2.0, 2.0, minPower, maxPower));
     }
 
     public void tankDrive(double leftPower, double rightPower) {
-        robotDrive.tankDrive(-leftPower, -rightPower);
+        leftMaster.set(ControlMode.PercentOutput, leftPower);
+        rightMaster.set(ControlMode.PercentOutput, rightPower);
     }
 
     public void setupPath(double x, double y, double startAngle, double gyroOffset) {
@@ -193,7 +199,7 @@ public class TeleOpDriveTrain extends Subsystem {
         return aimed;
     }
 
-    public void letGo() {
+    public void stop() {
         leftMaster.set(ControlMode.PercentOutput, 0);
         rightMaster.set(ControlMode.PercentOutput, 0);
     }
@@ -207,7 +213,7 @@ public class TeleOpDriveTrain extends Subsystem {
     }
 
     public double getSelectedGyroValue() {
-        return m_navX.getYaw() - gyroOffset;
+        return m_navX.getYaw() + gyroOffset;
     }
 
     public boolean gyroCalibrated() {
@@ -217,6 +223,30 @@ public class TeleOpDriveTrain extends Subsystem {
     public void zeroGyro(double offset) {
         m_navX.zeroYaw();
 
-        gyroOffset = gyroOffset - offset;
+        gyroOffset = offset;
+    }
+
+    public double clip(double value, double min, double max) {
+        if (value <= min) {
+            return min;
+        } else if (value >= max) {
+            return max;
+        } else{
+            return value;
+        }
+    }
+
+    public double range(double value, double currentMin, double currentMax, double desiredMin, double desiredMax) {
+        return desiredMin + (value - currentMin) * (desiredMax - desiredMin) / (currentMax - currentMin);
+    }
+
+    public double sqrInput(double value) {
+        if (value > 0) {
+            return value * value;
+        } else if (value < 0) {
+            return -value * value;
+        } else {
+            return 0;
+        }
     }
 }

@@ -16,7 +16,7 @@ import frc.robot.subsystems.TeleOpElevator;
  * An example command.  You can replace me with your own command.
  */
 public class ElevatorCommand extends Command {
-    TeleOpElevator elevator;
+    private TeleOpElevator elevator;
 
     public ElevatorCommand(TeleOpElevator elevator) {
         requires(elevator);
@@ -42,15 +42,15 @@ public class ElevatorCommand extends Command {
             elevator.elevatorMoveToInches(0);
         } else if (OI.get().elevatorHatchMid()) {
             elevator.elevatorMoveToInches(29.5);
-        } /**else if (OI.get().elevatorHatchHigh()) {
+        } else if (OI.get().elevatorHatchHigh()) {
             elevator.elevatorMoveToInches(57.5);
-        }*/ else if (OI.get().elevatorCargoLow()) {
+        } else if (OI.get().elevatorCargoLow()) {
             elevator.elevatorMoveToInches(13.5);
         } else if (OI.get().elevatorCargoMid()) {
             elevator.elevatorMoveToInches(41.5);
-        } /**else if (OI.get().elevatorCargoHigh()) {
+        } else if (OI.get().elevatorCargoHigh()) {
             elevator.elevatorMoveToInches(69.5);
-        }*/
+        }
 
         elevator.testSwitches();
 
@@ -59,10 +59,10 @@ public class ElevatorCommand extends Command {
         SmartDashboard.putNumber("Elevator Encoder", elevator.elevatorMaster.getSelectedSensorPosition());
         SmartDashboard.putNumber("elevator target", elevator.targetT);
 
-        SmartDashboard.putNumber("Elevator Master Voltage", elevator.elevatorMaster.getMotorOutputVoltage());
+        /**SmartDashboard.putNumber("Elevator Master Voltage", elevator.elevatorMaster.getMotorOutputVoltage());
         SmartDashboard.putNumber("Elevator Slave Voltage", elevator.elevatorSlave.getMotorOutputVoltage());
         SmartDashboard.putNumber("Elevator Master Amperage", elevator.elevatorMaster.getOutputCurrent());
-        SmartDashboard.putNumber("Elevator Slave Amperage", elevator.elevatorSlave.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Slave Amperage", elevator.elevatorSlave.getOutputCurrent());*/
     }
     // Make this return true when this Command no longer needs to run execute()
     @Override

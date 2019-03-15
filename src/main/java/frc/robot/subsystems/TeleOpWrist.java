@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
+import javax.sound.sampled.ReverbType;
+
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
@@ -30,8 +32,8 @@ public class TeleOpWrist extends Subsystem {
     double countsPerDegree = countsPerOutputRev / 360;
 
     static final double maxPower = .1;
-    double maxDegrees = 90;
-    double rearMax = -0;
+    double forwardLimitDegrees = 90;
+    double reverseLimitDegrees = -0;
 
     public TeleOpWrist() {
         wristMotor = new CANSparkMax(RobotMap.wrist, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -43,7 +45,7 @@ public class TeleOpWrist extends Subsystem {
 
         wristPID = wristMotor.getPIDController();
 
-        wristMotor.getEncoder().setPosition(degreesToTicks(rearMax));
+        wristMotor.getEncoder().setPosition(degreesToTicks(reverseLimitDegrees));
 
         wristPID.setP(.070);
         wristPID.setI(0);
@@ -66,10 +68,10 @@ public class TeleOpWrist extends Subsystem {
 
     public void testSwitches() {
         if (!forwardSwitch.get()) {
-            wristMotor.getEncoder().setPosition(degreesToTicks(rearMax));
+            wristMotor.getEncoder().setPosition(degreesToTicks(forwardLimitDegrees));
             wristPID.setOutputRange(-maxPower, 0);
         } else if (!reverseSwitch.get()) {
-            wristMotor.getEncoder().setPosition(degreesToTicks(maxDegrees));
+            wristMotor.getEncoder().setPosition(degreesToTicks(reverseLimitDegrees));
             wristPID.setOutputRange(0, maxPower);
         } else {
             wristPID.setOutputRange(-maxPower, maxPower);

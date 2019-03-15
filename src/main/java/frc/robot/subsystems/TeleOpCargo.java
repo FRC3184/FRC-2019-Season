@@ -17,7 +17,7 @@ import frc.robot.RobotMap;
 public class TeleOpCargo extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    VictorSP motor;
+    private VictorSP motor;
 
     public TeleOpCargo () {
         motor = new VictorSP(RobotMap.cargoIntake);

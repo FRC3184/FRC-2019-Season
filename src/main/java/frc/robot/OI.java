@@ -87,44 +87,54 @@ public class OI {
         return turn;
     }
 
+    public double getSecondTankPower() {
+        double turn;
+
+        turn = controller.getY(GenericHID.Hand.kRight);
+
+        return turn;
+    }
+
     public boolean getAlign() {
-        return controller.getBButton();
+        //return controller.getBButton();
+
+        return false;
     }
 
     public boolean elevatorHatchLow (){
-        if (controller1.getTriggerAxis(GenericHID.Hand.kLeft) >= .1) {
+        return controller1.getAButton();
+    }
+
+    public boolean elevatorHatchMid (){
+        return controller1.getBButton();
+    }
+
+    public boolean elevatorHatchHigh () {
+        if (controller1.getTriggerAxis(GenericHID.Hand.kRight) >= .1) {
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean elevatorHatchMid (){
-        return controller1.getAButton();
-    }
-
-    public boolean elevatorHatchHigh (){
-        return controller1.getBButton();
-    }
-
     public boolean elevatorCargoLow (){
-        return controller1.getBumper(GenericHID.Hand.kLeft);
-    }
-
-    public boolean elevatorCargoMid (){
         return controller1.getXButton();
     }
 
-    public boolean elevatorCargoHigh (){
+    public boolean elevatorCargoMid (){
         return controller1.getYButton();
     }
 
-    public boolean elevatorCargoShip (){
+    public boolean elevatorCargoHigh (){
         return controller1.getBumper(GenericHID.Hand.kRight);
     }
 
+    public boolean elevatorCargoShip (){
+        return controller1.getBumper(GenericHID.Hand.kLeft);
+    }
+
     public boolean elevatorCargoHP () {
-        if (controller1.getTriggerAxis(GenericHID.Hand.kRight) >= 0.1){
+        if (controller1.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.1){
            return true;
         } else {
             return false;
@@ -213,5 +223,45 @@ public class OI {
         } else {
             return 0;
         }
+    }
+
+    public double sqrInput(double power) {
+        if (power > 1.0) {
+            power = 1.0;
+        } else if (power < -1.0) {
+            power = -1.0;
+        }
+
+        if (power > 0) {
+            return power * power;
+        } else if (power < 0) {
+            return -(power * power);
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean habDeploy() {
+        return controller.getStartButton();
+    }
+
+    public boolean habRetract() {
+        return controller1.getStartButton();
+    }
+
+    public boolean habDriveForward() {
+        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(0) == 1) || (controller1.getPOV(7) == 1) || (controller1.getPOV(1) == 1));
+    }
+
+    public boolean habDriveBackwords() {
+        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(4) == 1) || (controller1.getPOV(3) == 1) || (controller1.getPOV(5) == 1));
+    }
+
+    public boolean habLeft() {
+        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(6) == 1) || (controller1.getPOV(7) == 1) || (controller1.getPOV(5) == 1));
+    }
+
+    public boolean habRight() {
+        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(2) == 1) || (controller1.getPOV(3) == 1) || (controller1.getPOV(1) == 1));
     }
 }

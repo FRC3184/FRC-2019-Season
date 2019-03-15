@@ -7,9 +7,7 @@
 
 package frc.robot.commands;
 
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpDriveTrain;
 import edu.wpi.first.networktables.NetworkTable;
@@ -20,17 +18,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  * An example command.  You can replace me with your own command.
  */
 public class TeleopDrive extends Command {
-    TeleOpDriveTrain drive;
-    AHRS nav_x;
+    private TeleOpDriveTrain drive;
 
-    double KpAim;
-    double KpDistance;
-    double min_aim_command;
-    double z;
-    double x;
-    double xDeg;
-    double[] pos;
-    boolean firstRun = true;
+    private double KpAim;
+    private double KpDistance;
+    private double min_aim_command;
+    private double z;
+    private double x;
+    private double xDeg;
+    private double[] pos;
+    private boolean firstRun = true;
 
     public TeleopDrive(TeleOpDriveTrain drive) {
         // Use requires() here to declare subsystem dependencies
@@ -58,13 +55,6 @@ public class TeleopDrive extends Command {
 
         z = pos[2];
         x = pos[0];
-
-        //post to smart dashboard periodically
-        SmartDashboard.putNumber("LimelightZ", z);
-        SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putBoolean("Gyro Calibrated", drive.gyroCalibrated());
-        SmartDashboard.putNumber("Left Encoder", drive.getLeftEncoderPos());
-        SmartDashboard.putNumber("Right Encoder", drive.getRightEncoderPos());
 
         if (OI.get().getAlign()) {
             if (!drive.onTarget(xDeg) && firstRun) {
@@ -118,7 +108,7 @@ public class TeleopDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        drive.letGo();
+        drive.stop();
     }
 
     // Called when another command which requires one or more of the same

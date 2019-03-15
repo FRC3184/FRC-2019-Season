@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -19,13 +20,23 @@ public class TeleOpHatch extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public TalonSRX motor;
+    public DigitalInput forwardLimitSwitch;
+    public DigitalInput reverseLimitSwitch;
 
+    public static final double forwardLimitDegrees = 330;
+    public static final double reverseLimitDegrees = 0;
+
+    static final double forwardMaxPower = .1; //Hatch out
+    static final double reverseMaxPower = -.1; //Hatch in
     static final double countsPerOSRev = 4096.0;
     static final double chainReduction = 22.0/18;
     static final double countsPerDegree = (countsPerOSRev / 360) * chainReduction;
 
     public TeleOpHatch () {
         motor = new TalonSRX(RobotMap.hatchIntake);
+
+        forwardLimitSwitch = new DigitalInput(RobotMap.hatchLimitSwitchForward);
+        reverseLimitSwitch = new DigitalInput(RobotMap.hatchLimitSwitchReverse);
 
         motor.configFactoryDefault();
 
@@ -39,6 +50,9 @@ public class TeleOpHatch extends Subsystem {
         motor.config_kF(0, 0);
 
         motor.configClosedloopRamp(.33);
+
+        motor.configPeakOutputForward(forwardMaxPower);
+        motor.configPeakOutputReverse(reverseMaxPower);
     }
 
     @Override
@@ -48,12 +62,31 @@ public class TeleOpHatch extends Subsystem {
     }
 
     public void hatchToDegrees(double target) {
-        double targetTicks = (target * countsPerDegree);
+        motor.set(ControlMode.Position, ticksToDegrees(target));
+    }
 
-        motor.set(ControlMode.Position, targetTicks);
+    public int ticksToDegrees(double degrees) {
+        return (int) (degrees * countsPerDegree);
     }
 
     public void testHatch (double power) {
          motor.set(ControlMode.PercentOutput, power) ;
+    }
+
+    public void testSwitches() {
+        if (!forwardLimitSwitch.get()) {
+            motor.setSelectedSensorPosition(ticksToDegrees(forwardLimitDegrees));
+
+            motor.configPeakOutputForward(0);
+            motor.configPeakOutputReverse(reverseMaxPower);
+        } else if (!reverseLimitSwitch.get()) {
+            motor.setSelectedSensorPosition(ticksToDegrees(reverseLimitDegrees));
+
+            motor.configPeakOutputForward(forwardMaxPower);
+            motor.configPeakOutputReverse(0);
+        } else {
+            motor.configPeakOutputForward(forwardMaxPower);
+            motor.configPeakOutputReverse(reverseMaxPower);
+        }
     }
 }

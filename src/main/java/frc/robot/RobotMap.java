@@ -30,6 +30,9 @@ public class RobotMap {
     public static int hatchIntake = 4;
 
     public static int wrist = 1;
+    public static int habFlipper = 2;
+    public static int habLeftWheel = 3; // from robots normal perspective
+    public static int habRightWheel = 4; // from robots normal perspective
 
     public static SPI.Port gyroPort = SPI.Port.kMXP;
 
@@ -37,6 +40,10 @@ public class RobotMap {
     public static int wristLimitSwitchForward = 1;
     public static int elevatorLimitSwitchReverse = 2;
     public static int elevatorLimitSwitchForward = 3;
+    public static int hatchLimitSwitchReverse = 4;
+    public static int hatchLimitSwitchForward = 5;
+    public static int habFlipperLimitSwitchReverse = 6;
+    public static int habFlipperLimitSwitchForward = 7;
 
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

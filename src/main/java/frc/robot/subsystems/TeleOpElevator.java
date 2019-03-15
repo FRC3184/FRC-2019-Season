@@ -24,20 +24,19 @@ public class TeleOpElevator extends Subsystem {
     // here. Call these from Commands.
     public TalonSRX elevatorMaster;
     public TalonSRX elevatorSlave;
-    SensorCollection elevatorLimitSwitches;
     public DigitalInput forwardLimitSwitch;
     public DigitalInput reverseLimitSwitch;
 
     public double targetT = 0;
 
-    static final double forwardMaxPower = .2; //Elevator down
-    static final double reverseMaxPower = -.3; //Elevator up
-    static final double countsPerOSRev = 4096;
-    static final double sprocketPitchDiameter = 4; //IN INCHES
-    static final double cascadeOffset = 5;
-    static final double topInches = 48.25;
-    static final double countsPerInchBeforeCascade = (countsPerOSRev/sprocketPitchDiameter);
-    static final double countsPerInchAfterCascade = (countsPerOSRev/(sprocketPitchDiameter * 2));
+    private static final double forwardMaxPower = .1; //Elevator down
+    private static final double reverseMaxPower = -.1; //Elevator up
+    private static final double countsPerOSRev = 4096;
+    private static final double sprocketPitchDiameter = 4; //IN INCHES
+    private static final double cascadeOffset = 5;
+    private static final double topInches = 48.25;
+    private static final double countsPerInchBeforeCascade = (countsPerOSRev/sprocketPitchDiameter);
+    private static final double countsPerInchAfterCascade = (countsPerOSRev/(sprocketPitchDiameter * 2));
 
     public TeleOpElevator() {
         elevatorMaster = new TalonSRX(RobotMap.elevatorMaster);
@@ -45,8 +44,6 @@ public class TeleOpElevator extends Subsystem {
 
         forwardLimitSwitch = new DigitalInput(RobotMap.elevatorLimitSwitchForward);
         reverseLimitSwitch = new DigitalInput(RobotMap.elevatorLimitSwitchReverse);
-
-        elevatorLimitSwitches = elevatorMaster.getSensorCollection();
 
         elevatorMaster.configFactoryDefault();
         elevatorSlave.configFactoryDefault();
@@ -85,13 +82,13 @@ public class TeleOpElevator extends Subsystem {
         if (!forwardLimitSwitch.get()) {
             elevatorMaster.setSelectedSensorPosition(inchesToTicks(topInches));
 
-            elevatorMaster.configPeakOutputForward(forwardMaxPower);
-            elevatorMaster.configPeakOutputReverse(0);
+            elevatorMaster.configPeakOutputForward(0);
+            elevatorMaster.configPeakOutputReverse(reverseMaxPower);
         } else if (!reverseLimitSwitch.get()) {
             elevatorMaster.setSelectedSensorPosition(0);
 
-            elevatorMaster.configPeakOutputForward(0);
-            elevatorMaster.configPeakOutputReverse(reverseMaxPower);
+            elevatorMaster.configPeakOutputForward(forwardMaxPower);
+            elevatorMaster.configPeakOutputReverse(0);
         } else {
             elevatorMaster.configPeakOutputForward(forwardMaxPower);
             elevatorMaster.configPeakOutputReverse(reverseMaxPower);
