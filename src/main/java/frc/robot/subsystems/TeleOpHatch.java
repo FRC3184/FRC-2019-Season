@@ -26,8 +26,8 @@ public class TeleOpHatch extends Subsystem {
     public static final double forwardLimitDegrees = 330;
     public static final double reverseLimitDegrees = 0;
 
-    static final double forwardMaxPower = .1; //Hatch out
-    static final double reverseMaxPower = -.1; //Hatch in
+    static final double forwardMaxPower = 1.0; //Hatch out
+    static final double reverseMaxPower = -1.0; //Hatch in
     static final double countsPerOSRev = 4096.0;
     static final double chainReduction = 22.0/18;
     static final double countsPerDegree = (countsPerOSRev / 360) * chainReduction;

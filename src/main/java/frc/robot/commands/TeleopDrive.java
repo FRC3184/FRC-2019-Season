@@ -56,11 +56,11 @@ public class TeleopDrive extends Command {
         z = pos[2];
         x = pos[0];
 
-        if (OI.get().getAlign()) {
+        if (OI.get().limeLight()) {
             if (!drive.onTarget(xDeg) && firstRun) {
                 drive.aimAtTarget(xDeg);
             } else if (firstRun) {
-                double angleToTarget = Math.atan(z/ x);
+                double angleToTarget = Math.atan(z / x);
 
                 if (x > 0) {
                     angleToTarget = +angleToTarget;
@@ -94,7 +94,24 @@ public class TeleopDrive extends Command {
              }
              }*/
         } else {
-            drive.arcadeDrive(OI.get().getPower(), OI.get().getTurn());
+            double power;
+            double turn;
+
+            if (OI.get().driveSlowdown()) {
+                power = OI.get().scale(OI.get().slowPower(), -1.0, 1.0, -.3, .3);
+                turn = OI.get().scale(OI.get().slowTurn(), -1.0, 1.0, -.3, .3);
+            } else {
+                power = OI.get().getPower();
+                turn = OI.get().getTurn();
+            }
+
+            if (OI.get().habDriveForward()) {
+                turn = .25;
+            } else if (OI.get().habDriveBackwords()) {
+                turn = -.25;
+            }
+
+            drive.arcadeDrive(power, turn);
             firstRun = true;
         }
     }

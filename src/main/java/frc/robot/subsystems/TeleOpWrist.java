@@ -31,9 +31,9 @@ public class TeleOpWrist extends Subsystem {
     double countsPerOutputRev = countsPerMotorRev * gearRatio;
     double countsPerDegree = countsPerOutputRev / 360;
 
-    static final double maxPower = .1;
-    double forwardLimitDegrees = 90;
-    double reverseLimitDegrees = -0;
+    static final double maxPower = .4;
+    public double forwardLimitDegrees = -19;
+    double reverseLimitDegrees = 90;
 
     public TeleOpWrist() {
         wristMotor = new CANSparkMax(RobotMap.wrist, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -45,7 +45,7 @@ public class TeleOpWrist extends Subsystem {
 
         wristPID = wristMotor.getPIDController();
 
-        wristMotor.getEncoder().setPosition(degreesToTicks(reverseLimitDegrees));
+        wristMotor.getEncoder().setPosition(degreesToTicks(forwardLimitDegrees));
 
         wristPID.setP(.070);
         wristPID.setI(0);
@@ -68,10 +68,10 @@ public class TeleOpWrist extends Subsystem {
 
     public void testSwitches() {
         if (!forwardSwitch.get()) {
-            wristMotor.getEncoder().setPosition(degreesToTicks(forwardLimitDegrees));
+            //wristMotor.getEncoder().setPosition(degreesToTicks(forwardLimitDegrees));
             wristPID.setOutputRange(-maxPower, 0);
         } else if (!reverseSwitch.get()) {
-            wristMotor.getEncoder().setPosition(degreesToTicks(reverseLimitDegrees));
+            //wristMotor.getEncoder().setPosition(degreesToTicks(reverseLimitDegrees));
             wristPID.setOutputRange(0, maxPower);
         } else {
             wristPID.setOutputRange(-maxPower, maxPower);
@@ -88,5 +88,13 @@ public class TeleOpWrist extends Subsystem {
 
     public void zero() {
         wristMotor.getEncoder().setPosition(0);
+    }
+
+    public void runToReverseSwitch() {
+        if (!reverseSwitch.get()) {
+            wristMotor.set(0);
+        } else {
+            wristMotor.set(-.1);
+        }
     }
 }

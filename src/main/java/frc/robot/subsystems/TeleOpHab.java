@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.*;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -18,51 +20,70 @@ import frc.robot.RobotMap;
 public class TeleOpHab extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private CANSparkMax flipper;
-    private CANSparkMax leftWheel;
-    private CANSparkMax rightWheel;
+    private CANSparkMax leftStilt;
+    private CANSparkMax rightStilt;
+    private VictorSP leftWheel;
+    private VictorSP rightWheel;
 
-    private CANPIDController flipperPID;
-    private CANEncoder flipperEncoder;
+    private CANPIDController leftStiltPID;
+    public CANEncoder leftStiltEncoder;
+    private CANPIDController rightStiltPID;
+    public CANEncoder rightStiltEncoder;
 
-    public DigitalInput forwardSwitch;
-    public DigitalInput reverseSwitch;
+    public DigitalInput leftForwardSwitch;
+    public DigitalInput leftReverseSwitch;
 
-    private static final double flipperMaxPower = .1;
-    private static final double maxForwardDegrees = 100;
-    private static final double maxReverseDegrees = 0;
+    public DigitalInput rightForwardSwitch;
+    public DigitalInput rightReverseSwitch;
 
-    private static final double driveRamp = .25;
+    private static final double stiltMaxPower = 1.0;
+    private static final double maxStiltExtend = 23;
+    private static final double stiltZero = 0;
 
-    private static final int ticksPerFlipperDegree = (int) (1.0 * 250.0) / 360;
+    private static final int ticksPerStiltDegree = (int) ((1.0 * 15.0) / 3.71); //Actually inches...
+
+    private static final double stiltP = .5;
+    private static final double stiltI = 0;
+    private static final double stiltD = 0;
+    private static final double stiltFF = 0;
+
+    double runPos = 0;
 
     public TeleOpHab() {
-        flipper = new CANSparkMax(RobotMap.habFlipper, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftWheel = new CANSparkMax(RobotMap.habLeftWheel, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightWheel = new CANSparkMax(RobotMap.habRightWheel, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftStilt = new CANSparkMax(RobotMap.leftStilt, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightStilt = new CANSparkMax(RobotMap.rightStilt, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        forwardSwitch = new DigitalInput(RobotMap.habFlipperLimitSwitchForward);
-        reverseSwitch = new DigitalInput(RobotMap.habFlipperLimitSwitchReverse);
+        leftForwardSwitch = new DigitalInput(RobotMap.habLeftStiltForward);
+        leftReverseSwitch = new DigitalInput(RobotMap.habLeftStiltReverse);
+        rightForwardSwitch = new DigitalInput(RobotMap.habRightStiltForward);
+        rightReverseSwitch = new DigitalInput(RobotMap.habRightStiltReverse);
 
-        flipper.restoreFactoryDefaults();
-        leftWheel.restoreFactoryDefaults();
-        rightWheel.restoreFactoryDefaults();
+        leftWheel = new VictorSP(RobotMap.leftWheel);
+        rightWheel = new VictorSP(RobotMap.rightWheel);
 
-        flipperPID = flipper.getPIDController();
-        flipperEncoder = flipper.getEncoder();
+        leftStilt.restoreFactoryDefaults();
+        rightStilt.restoreFactoryDefaults();
+
+        leftStiltPID = leftStilt.getPIDController();
+        leftStiltEncoder = leftStilt.getEncoder();
+        rightStiltPID = rightStilt.getPIDController();
+        rightStiltEncoder = rightStilt.getEncoder();
 
         zero();
 
-        flipperPID.setP(.070);
-        flipperPID.setI(0);
-        flipperPID.setD(2);
-        flipperPID.setFF(0);
-        flipperPID.setIZone(0);
-        flipperPID.setOutputRange(-flipperMaxPower, flipperMaxPower);
-        flipper.setClosedLoopRampRate(.33);
+        leftStiltPID.setP(stiltP);
+        leftStiltPID.setI(stiltI);
+        leftStiltPID.setD(stiltD);
+        leftStiltPID.setFF(stiltFF);
+        leftStiltPID.setOutputRange(-stiltMaxPower, stiltMaxPower);
+        leftStilt.setClosedLoopRampRate(.33);
 
-        leftWheel.setOpenLoopRampRate(driveRamp);
-        rightWheel.setOpenLoopRampRate(driveRamp);
+        rightStiltPID.setP(stiltP);
+        rightStiltPID.setI(stiltI);
+        rightStiltPID.setD(stiltD);
+        rightStiltPID.setFF(stiltFF);
+        rightStiltPID.setOutputRange(-stiltMaxPower, stiltMaxPower);
+        rightStilt.setClosedLoopRampRate(.33);
     }
 
     @Override
@@ -72,23 +93,36 @@ public class TeleOpHab extends Subsystem {
     }
 
     public void wristToPosition(double targetDegrees) {
-        flipperPID.setReference(-targetDegrees * ticksPerFlipperDegree, ControlType.kPosition);
+        runPos = degreesToTicks(targetDegrees);
+
+        //leftStiltPID.setReference(degreesToTicks(targetDegrees), ControlType.kPosition);
+        //rightStiltPID.setReference(-degreesToTicks(targetDegrees), ControlType.kPosition);
     }
 
     public void testSwitches() {
-        if (!forwardSwitch.get()) {
-            flipper.getEncoder().setPosition(degreesToTicks(maxForwardDegrees));
-            flipperPID.setOutputRange(-flipperMaxPower, 0);
-        } else if (!reverseSwitch.get()) {
-            flipper.getEncoder().setPosition(degreesToTicks(maxReverseDegrees));
-            flipperPID.setOutputRange(0, flipperMaxPower);
+        if (!leftForwardSwitch.get()) {
+            leftStilt.getEncoder().setPosition(degreesToTicks(maxStiltExtend));
+            leftStiltPID.setOutputRange(-stiltMaxPower, 0);
+        } else if (!rightReverseSwitch.get()) {
+            leftStilt.getEncoder().setPosition(degreesToTicks(stiltZero));
+            leftStiltPID.setOutputRange(0, stiltMaxPower);
         } else {
-            flipperPID.setOutputRange(-flipperMaxPower, flipperMaxPower);
+            leftStiltPID.setOutputRange(-stiltMaxPower, stiltMaxPower);
+        }
+
+        if (!leftForwardSwitch.get()) {
+            rightStilt.getEncoder().setPosition(degreesToTicks(maxStiltExtend));
+            rightStiltPID.setOutputRange(-stiltMaxPower, 0);
+        } else if (!leftReverseSwitch.get()) {
+            rightStilt.getEncoder().setPosition(degreesToTicks(stiltZero));
+            rightStiltPID.setOutputRange(0, stiltMaxPower);
+        } else {
+            rightStiltPID.setOutputRange(-stiltMaxPower, stiltMaxPower);
         }
     }
 
     double degreesToTicks(double degrees) {
-        return -degrees * ticksPerFlipperDegree;
+        return degrees * ticksPerStiltDegree;
     }
 
     public void habDrive(double power, double turn) {
@@ -96,14 +130,47 @@ public class TeleOpHab extends Subsystem {
         double rightPower = power + turn;
 
         leftWheel.set(leftPower);
-        rightWheel.set(-rightPower);
+        rightWheel.set(rightPower);
     }
 
     public void test(double power) {
-        flipper.set(power);
+        leftStilt.set(power);
+        rightStilt.set(-power);
     }
 
     public void zero() {
-        flipper.getEncoder().setPosition(0);
+        leftStilt.getEncoder().setPosition(0);
+        rightStilt.getEncoder().setPosition(0);
+    }
+
+    public void updateToPos() {
+        //down
+        if (runPos >= 1) {
+            if (leftStilt.getEncoder().getPosition() <= runPos) {
+                leftStilt.set(stiltMaxPower);
+            } else {
+                leftStilt.set(.16);
+            }
+            //negative
+            if (rightStilt.getEncoder().getPosition() >= -runPos) {
+                rightStilt.set(-stiltMaxPower);
+            } else {
+                rightStilt.set(-.16);
+            }
+        }
+        //up
+        else if (runPos < 1) {
+            if (leftStilt.getEncoder().getPosition() >= runPos) {
+                leftStilt.set(-.25);
+            } else {
+                leftStilt.set(0);
+            }
+
+            if (rightStilt.getEncoder().getPosition() <= -runPos) {
+                rightStilt.set(.25);
+            } else {
+                rightStilt.set(0);
+            }
+        }
     }
 }

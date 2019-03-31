@@ -32,18 +32,25 @@ public class WristCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (OI.get().wristGround()) {
+        if (OI.get().defenciveWristPos()) {
+            wrist.wristToPosition(-18);
+        } else if (OI.get().wristGround()) {
             wrist.wristToPosition(90);
         } else if (OI.get().wristStowed()) {
-            wrist.wristToPosition(0);
+            wrist.wristToPosition(-3 );
         } else if (OI.get().wristHatch()) {
-            wrist.wristToPosition(66);
+            wrist.wristToPosition(60);
+        } else if (OI.get().wristCargo()) {
+            wrist.wristToPosition(50);
+        } else if (OI.get().wristToSwitch()) {
+            wrist.runToReverseSwitch();
         }
 
         wrist.testSwitches();
 
         SmartDashboard.putBoolean("Wrist Reverse Switch", wrist.reverseSwitch.get());
         SmartDashboard.putBoolean("Wrist Forward Switch", wrist.forwardSwitch.get());
+        SmartDashboard.putNumber("Wrist Encoder", wrist.wristMotor.getEncoder().getPosition());
     }
 
     // Make this return true when this Command no longer needs to run execute()

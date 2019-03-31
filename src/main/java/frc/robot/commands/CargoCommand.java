@@ -17,7 +17,7 @@ import frc.robot.subsystems.TeleOpCargo;
 public class CargoCommand extends Command {
     private TeleOpCargo cargo;
 
-    private static final double speed = .1;
+    private static final double speed = .5;
 
     public CargoCommand(TeleOpCargo cargo) {
         // Use requires() here to declare subsystem dependencies

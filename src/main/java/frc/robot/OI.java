@@ -44,12 +44,14 @@ public class OI {
   // button.whenReleased(new ExampleCommand());
   private XboxController controller;
   private XboxController controller1;
+  private XboxController controller2;
 
   private int layer = 0;
 
     private OI (){
         controller = new XboxController(0);
         controller1 = new XboxController(1);
+        controller2 = new XboxController(2);
     }
 
     public void updateLayerShift() {
@@ -74,7 +76,7 @@ public class OI {
     public double getPower() {
         double power;
 
-        power = controller.getY(GenericHID.Hand.kLeft);
+        power = controller.getX(GenericHID.Hand.kRight);
 
         return power;
     }
@@ -82,7 +84,7 @@ public class OI {
     public double getTurn() {
         double turn;
 
-        turn = controller.getX(GenericHID.Hand.kRight);
+        turn = controller.getY(GenericHID.Hand.kLeft);
 
         return turn;
     }
@@ -96,8 +98,6 @@ public class OI {
     }
 
     public boolean getAlign() {
-        //return controller.getBButton();
-
         return false;
     }
 
@@ -153,6 +153,10 @@ public class OI {
         return controller.getXButton();
     }
 
+    public boolean wristCargo () {
+        return controller.getBButton();
+    }
+
     public boolean cargoIntake () {
         if (controller.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.1){
            return true;
@@ -202,8 +206,8 @@ public class OI {
     }
 
     public double testElevator() {
-        if (layer == 1) {
-            return controller.getY(GenericHID.Hand.kRight);
+        if (layer == 1 || true) {
+            return controller2.getY(GenericHID.Hand.kRight);
         } else {
             return 0;
         }
@@ -223,6 +227,10 @@ public class OI {
         } else {
             return 0;
         }
+    }
+
+    public double testHab() {
+        return controller2.getY(GenericHID.Hand.kLeft);
     }
 
     public double sqrInput(double power) {
@@ -249,19 +257,57 @@ public class OI {
         return controller1.getStartButton();
     }
 
+    public boolean wristToSwitch() {
+        return controller.getBackButton();
+    }
+
+    public boolean defenciveWristPos() {
+        return controller1.getBackButton();
+    }
+
     public boolean habDriveForward() {
-        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(0) == 1) || (controller1.getPOV(7) == 1) || (controller1.getPOV(1) == 1));
+        return ((controller1.getPOV() == 180) || (controller1.getPOV() == 135) || (controller1.getPOV() == 225));
     }
 
     public boolean habDriveBackwords() {
-        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(4) == 1) || (controller1.getPOV(3) == 1) || (controller1.getPOV(5) == 1));
+        return  ((controller1.getPOV() == 0) || (controller1.getPOV() == 315) || (controller1.getPOV() == 45));
     }
 
     public boolean habLeft() {
-        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(6) == 1) || (controller1.getPOV(7) == 1) || (controller1.getPOV(5) == 1));
+        return ((controller1.getPOV() == 270));
     }
 
     public boolean habRight() {
-        return controller1.getStickButton(GenericHID.Hand.kRight) && ((controller1.getPOV(2) == 1) || (controller1.getPOV(3) == 1) || (controller1.getPOV(1) == 1));
+        return ((controller1.getPOV() == 90));
+    }
+
+    public boolean driveSlowdown() {
+        return controller.getPOV() == 180;
+    }
+
+    public double slowPower() {
+        return controller.getX(GenericHID.Hand.kRight);
+    }
+
+    public double slowTurn() {
+        return controller.getY(GenericHID.Hand.kRight);
+    }
+
+    public boolean limeLight() {
+        return controller.getPOV() == 270;
+    }
+
+    public double scale(double input, double inputLowerRange, double inputUpperRange, double outputLowerRange, double outputUpperRange) {
+        double a = input;
+        double b = inputLowerRange;
+        double c = inputUpperRange;
+        double x = outputLowerRange;
+        double y = outputUpperRange;
+
+        return x + (a - b) * (y - x) / (c - b);
+    }
+
+    public boolean habElevator() {
+        return controller1.getStickButton(GenericHID.Hand.kRight);
     }
 }

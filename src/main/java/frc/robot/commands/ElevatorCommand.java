@@ -37,7 +37,7 @@ public class ElevatorCommand extends Command {
         if (OI.get().elevatorCargoHP()) {
             elevator.elevatorMoveToInches(12);
         } else if (OI.get().elevatorCargoShip()) {
-            elevator.elevatorMoveToInches(38);
+            elevator.elevatorMoveToInches(33);
         } else if (OI.get().elevatorHatchLow()) {
             elevator.elevatorMoveToInches(0);
         } else if (OI.get().elevatorHatchMid()) {
@@ -48,14 +48,25 @@ public class ElevatorCommand extends Command {
             elevator.elevatorMoveToInches(13.5);
         } else if (OI.get().elevatorCargoMid()) {
             elevator.elevatorMoveToInches(41.5);
-        } else if (OI.get().elevatorCargoHigh()) {
-            elevator.elevatorMoveToInches(69.5);
+        }  else if (OI.get().elevatorCargoHigh()) {
+            elevator.elevatorMoveToInches(44); //69.5
+        } else if (OI.get().habElevator()) {
+            elevator.elevatorMoveToInches(7);
+            //elevator.elevatorMoveToInches(21);
+        } else if (OI.get().habDeploy()) {
+            elevator.hab();
+
+            elevator.elevatorMoveToInches(0);
         }
 
         elevator.testSwitches();
 
         SmartDashboard.putBoolean("Elevator Switch reverse", elevator.reverseLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator Switch forward", elevator.forwardLimitSwitch.get());
+        SmartDashboard.putNumber("Elevator Encoder", elevator.elevatorMaster.getSelectedSensorPosition());
+        SmartDashboard.putNumber("closed loop", elevator.elevatorMaster.getClosedLoopError());
+
+        //elevator.test(-OI.get().testElevator());
 
         /**SmartDashboard.putNumber("Elevator Master Voltage", elevator.elevatorMaster.getMotorOutputVoltage());
         SmartDashboard.putNumber("Elevator Slave Voltage", elevator.elevatorSlave.getMotorOutputVoltage());

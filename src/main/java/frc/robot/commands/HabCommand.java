@@ -18,9 +18,10 @@ import frc.robot.subsystems.TeleOpHab;
 public class HabCommand extends Command {
     private TeleOpHab hab;
 
-    private static final double drivePower = .5;
-    private static final double turnPower = .2;
-    private static final double flipperDeployedDegrees = 100;
+    private static final double drivePower = 1.0;
+    private static final double turnPower = .8;
+    private static final double stiltDeployedInches = 7;
+    //private static final double stiltDeployedInches = 21;
 
     public HabCommand(TeleOpHab hab) {
         // Use requires() here to declare subsystem dependencies
@@ -43,31 +44,39 @@ public class HabCommand extends Command {
         if (OI.get().habRetract()) {
             hab.wristToPosition(0);
         } else if (OI.get().habDeploy()) {
-            hab.wristToPosition(flipperDeployedDegrees);
+            hab.wristToPosition(stiltDeployedInches);
         }
 
         if (OI.get().habDriveForward()) {
             power = drivePower;
-        }
-
-        if (OI.get().habDriveBackwords()) {
+        } else if (OI.get().habDriveBackwords()) {
             power = -drivePower;
+        } else {
+            power = 0;
         }
 
         if (OI.get().habLeft()) {
             turn = turnPower;
-        }
-
-        if (OI.get().habRight()) {
+        } else if (OI.get().habRight()) {
             turn = -turnPower;
+        } else {
+            turn = 0;
         }
 
-        hab.habDrive(power, turn);
+        hab.habDrive(-turn, power);
+
+        //hab.test(OI.get().testHab());
 
         hab.testSwitches();
 
-        SmartDashboard.putBoolean("Flipper Limit Reverse", hab.reverseSwitch.get());
-        SmartDashboard.putBoolean("Flipper Limit Forward", hab.forwardSwitch.get());
+        hab.updateToPos();
+
+        SmartDashboard.putBoolean("Left Limit Reverse", hab.leftReverseSwitch.get());
+        SmartDashboard.putBoolean("Left Limit Forward", hab.leftForwardSwitch.get());
+        SmartDashboard.putBoolean("right Limit Reverse", hab.rightReverseSwitch.get());
+        SmartDashboard.putBoolean("right Limit Forward", hab.rightForwardSwitch.get());
+        SmartDashboard.putNumber("left Stilt", hab.leftStiltEncoder.getPosition());
+        SmartDashboard.putNumber("right Stilt", hab.rightStiltEncoder.getPosition());
     }
 
     // Make this return true when this Command no longer needs to run execute()

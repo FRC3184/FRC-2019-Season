@@ -29,8 +29,8 @@ public class TeleOpElevator extends Subsystem {
 
     public double targetT = 0;
 
-    private static final double forwardMaxPower = .1; //Elevator down
-    private static final double reverseMaxPower = -.1; //Elevator up
+    private static final double forwardMaxPower = .8; //Elevator up
+    private double reverseMaxPower = -.4; //Elevator down
     private static final double countsPerOSRev = 4096;
     private static final double sprocketPitchDiameter = 4; //IN INCHES
     private static final double cascadeOffset = 5;
@@ -52,9 +52,9 @@ public class TeleOpElevator extends Subsystem {
 
         elevatorMaster.setSelectedSensorPosition(0);
 
-        elevatorMaster.setSensorPhase(true);
+        elevatorMaster.setSensorPhase(false);
 
-        elevatorMaster.config_kP(0, .25);
+        elevatorMaster.config_kP(0, 1.0);
         elevatorMaster.config_kI(0, 0);
         elevatorMaster.config_kD(0, 10.0);
         elevatorMaster.config_kF(0, 0);
@@ -104,10 +104,16 @@ public class TeleOpElevator extends Subsystem {
             ticks = ((inches - cascadeOffset) * countsPerInchAfterCascade) + (cascadeOffset * countsPerInchBeforeCascade);
         }
 
-        return (int)-ticks;
+        return (int) ticks;
     }
 
     public void test(double power) {
         elevatorMaster.set(ControlMode.PercentOutput, power);
+    }
+
+    public void hab() {
+        reverseMaxPower = -.7;
+
+        elevatorMaster.configPeakOutputReverse(-.7);
     }
 }

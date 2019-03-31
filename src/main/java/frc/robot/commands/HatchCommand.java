@@ -42,7 +42,7 @@ public class HatchCommand extends Command {
             if (first) {
                 hatch.hatchToDegrees(90);
 
-                if (!OI.get().placeHatch()) {
+                if (OI.get().placeHatch()) {
                     first = false;
                 }
             } else {

@@ -85,8 +85,8 @@ public class TeleOpDriveTrain extends Subsystem {
         double leftPower = power - turn;
         double rightPower = power + turn;
 
-        leftMaster.set(ControlMode.PercentOutput, range(leftPower, -2.0, 2.0, minPower, maxPower));
-        rightMaster.set(ControlMode.PercentOutput, -range(rightPower, -2.0, 2.0, minPower, maxPower));
+        leftMaster.set(ControlMode.PercentOutput, leftPower);
+        rightMaster.set(ControlMode.PercentOutput, rightPower);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
@@ -133,11 +133,11 @@ public class TeleOpDriveTrain extends Subsystem {
 
         leftFollower.configureEncoder(getLeftEncoderPos(), ticksPerRev, wheelDiameter);
         // You must tune the PID values on the following line!
-        leftFollower.configurePIDVA(.5, 0.0, 0.0, .21063, .067941);
+        leftFollower.configurePIDVA(.5, 0.0, 0.0, .7508, .1678);
 
         rightFollower.configureEncoder(getRightEncoderPos(), ticksPerRev, wheelDiameter);
         // You must tune the PID values on the following line!
-        rightFollower.configurePIDVA(.5, 0.0, 0.0, .20054, .069116);
+        rightFollower.configurePIDVA(.5, 0.0, 0.0, .7394, .2182);
     }
 
     public void followPath() {
