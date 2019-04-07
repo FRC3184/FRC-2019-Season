@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.TeleOpDriveTrain;
 import edu.wpi.first.networktables.NetworkTable;
@@ -41,26 +42,32 @@ public class TeleopDrive extends Command {
         KpAim = -0.1f;
         KpDistance = -0.1f;
         min_aim_command = 0.05f;
+
+        drive.leftMaster.setSelectedSensorPosition(0);
+        drive.rightMaster.setSelectedSensorPosition(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        SmartDashboard.putNumber("leftEnc", drive.getLeftEncoderPos());
+        SmartDashboard.putNumber("rightEnc", drive.getRightEncoderPos());
+
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-blaze");
         NetworkTableEntry tx = table.getEntry("tx");
         NetworkTableEntry tpos = table.getEntry("camtran");
 
         xDeg = tx.getDouble(0.0);
-        pos = tpos.getDoubleArray(new double[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0});
+        pos = tpos.getDoubleArray(new double[] {0,0,0,0,0,0});
 
-        z = pos[2];
+        z = pos[1];
         x = pos[0];
 
         if (OI.get().limeLight()) {
-            if (!drive.onTarget(xDeg) && firstRun) {
-                drive.aimAtTarget(xDeg);
-            } else if (firstRun) {
-                double angleToTarget = Math.atan(z / x);
+            //if ((!drive.onTarget(xDeg) && firstRun) || false) {
+                //drive.aimAtTarget(xDeg);
+            /**}*/ if (firstRun) {
+                /**double angleToTarget = Math.atan(z / x);
 
                 if (x > 0) {
                     angleToTarget = +angleToTarget;
@@ -68,17 +75,21 @@ public class TeleopDrive extends Command {
                     angleToTarget = -angleToTarget;
                 } else {
                     angleToTarget = 0;
-                }
+                }*/
 
-                double startingAngle = 90 - angleToTarget;
+                //double angleToTarget = pos[5];
 
-                //elevator.setupPath(-(z + 30) * .0254, (x) * .0254, 0 , angleToTarget);
+                //SmartDashboard.putNumber("", 0);
 
-                drive.setupPath(4, 0, 0,0);
+                //drive.setupPath(-(z + 30), (x), angleToTarget);
+
+                drive.setupPath(1, 0, 0);
 
                 firstRun = false;
-            } else if (!drive.pathComplete()){
+            } else if (!drive.pathComplete() || true){
                 drive.followPath();
+            } else {
+                //drive.arcadeDrive(0,0);
             }
 
             /*if (elevator.gyroCalibrated()) {
@@ -93,6 +104,9 @@ public class TeleopDrive extends Command {
              //Manipulator decision here
              }
              }*/
+
+            //drive.limeLightTrack();
+
         } else {
             double power;
             double turn;
@@ -105,11 +119,11 @@ public class TeleopDrive extends Command {
                 turn = OI.get().getTurn();
             }
 
-            if (OI.get().habDriveForward()) {
+            /**if (OI.get().habDriveForward()) {
                 turn = .25;
             } else if (OI.get().habDriveBackwords()) {
                 turn = -.25;
-            }
+            }*/
 
             drive.arcadeDrive(power, turn);
             firstRun = true;
