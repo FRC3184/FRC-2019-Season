@@ -77,8 +77,12 @@ public class ElevatorCommand extends Command {
 
         if (hab3Selected) {
             selectedHabPosition = hab3;
+            SmartDashboard.putBoolean("Hab 3 Toggle", true);
+            SmartDashboard.putBoolean("Hab 2 Toggle", false);
         } else {
             selectedHabPosition = hab2;
+            SmartDashboard.putBoolean("Hab 3 Toggle", false);
+            SmartDashboard.putBoolean("Hab 2 Toggle", true);
         }
 
         elevator.testSwitches();
