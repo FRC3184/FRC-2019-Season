@@ -17,6 +17,12 @@ import frc.robot.subsystems.TeleOpElevator;
  */
 public class ElevatorCommand extends Command {
     private TeleOpElevator elevator;
+    private static final double hab2 = 7;
+    private static final double hab3 = 21;
+    private boolean hab = false;
+    private double selectedHabPosition = hab3;
+    private boolean togglePressed = false;
+    private boolean hab3Selected = true;
 
     public ElevatorCommand(TeleOpElevator elevator) {
         requires(elevator);
@@ -51,12 +57,28 @@ public class ElevatorCommand extends Command {
         }  else if (OI.get().elevatorCargoHigh()) {
             elevator.elevatorMoveToInches(44); //69.5
         } else if (OI.get().habElevator()) {
-            elevator.elevatorMoveToInches(7);
-            //elevator.elevatorMoveToInches(21);
+            hab = true;
         } else if (OI.get().habDeploy()) {
             elevator.hab();
 
             elevator.elevatorMoveToInches(0);
+        }
+
+        if (OI.get().habToggle() && togglePressed == false) {
+            togglePressed = true;
+            hab3Selected = !hab3Selected;
+        } else if(!OI.get().habToggle() && togglePressed == true){
+            togglePressed = false;
+        }
+
+        if (hab == true) {
+            elevator.elevatorMoveToInches(selectedHabPosition);
+        }
+
+        if (hab3Selected) {
+            selectedHabPosition = hab3;
+        } else {
+            selectedHabPosition = hab2;
         }
 
         elevator.testSwitches();

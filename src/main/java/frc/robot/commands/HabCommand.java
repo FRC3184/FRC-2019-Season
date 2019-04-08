@@ -20,8 +20,11 @@ public class HabCommand extends Command {
 
     private static final double drivePower = 1.0;
     private static final double turnPower = .8;
-    private static final double stiltDeployedInches = 7;
-    //private static final double stiltDeployedInches = 21;
+    private static final double hab2 = 7;
+    private static final double hab3 = 21;
+    private double habPosition = hab3;
+    private boolean togglePressed = false;
+    private boolean hab3Selected = true;
 
     public HabCommand(TeleOpHab hab) {
         // Use requires() here to declare subsystem dependencies
@@ -43,8 +46,21 @@ public class HabCommand extends Command {
 
         if (OI.get().habRetract()) {
             hab.wristToPosition(0);
-        } else if (OI.get().habDeploy()) {
-            hab.wristToPosition(stiltDeployedInches);
+        } else if (OI.get().habDeploy()){
+            hab.wristToPosition(habPosition);
+        }
+
+        if (OI.get().habToggle() && togglePressed == false) {
+            togglePressed = true;
+            hab3Selected = !hab3Selected;
+        } else if(!OI.get().habToggle() && togglePressed == true){
+            togglePressed = false;
+        }
+
+        if (hab3Selected) {
+            habPosition = hab3;
+        } else {
+            habPosition = hab2;
         }
 
         if (OI.get().habDriveForward()) {

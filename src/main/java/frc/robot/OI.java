@@ -249,6 +249,10 @@ public class OI {
         }
     }
 
+    public boolean habToggle() {
+        return controller1.getStickButton(GenericHID.Hand.kLeft);
+    }
+
     public boolean habDeploy() {
         return controller.getStartButton();
     }
