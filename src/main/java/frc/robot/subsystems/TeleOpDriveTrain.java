@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,10 +29,10 @@ import jaci.pathfinder.modifiers.TankModifier;
 public class TeleOpDriveTrain extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    public TalonSRX leftMaster;
-    public TalonSRX rightMaster;
-    private VictorSPX leftSlave;
-    private VictorSPX rightSlave;
+    public CANSparkMax leftMaster;
+    public CANSparkMax rightMaster;
+    private TalonSRX leftSlave;
+    private TalonSRX rightSlave;
 
     private static final double minPower = .1;
     private static final double maxPower = .1;
@@ -59,21 +61,15 @@ public class TeleOpDriveTrain extends Subsystem {
     private double m_LimelightSteerCommand = 0.0;
 
     public TeleOpDriveTrain() {
-        leftMaster = new TalonSRX(RobotMap.leftDriveMaster);
-        rightMaster = new TalonSRX(RobotMap.rightDriveMaster);
-        leftSlave = new VictorSPX(RobotMap.leftDriveSlave);
-        rightSlave = new VictorSPX(RobotMap.rightDriveSlave);
+        leftMaster = new CANSparkMax(RobotMap.leftDriveMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightMaster = new CANSparkMax(RobotMap.rightDriveMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftSlave = new TalonSRX(RobotMap.leftDriveSlave);
+        rightSlave = new TalonSRX(RobotMap.rightDriveSlave);
 
-        leftMaster.configFactoryDefault();
-        rightMaster.configFactoryDefault();
+        leftMaster.restoreFactoryDefaults();
+        rightMaster.restoreFactoryDefaults();
         leftSlave.configFactoryDefault();
         rightSlave.configFactoryDefault();
-
-        leftSlave.follow(leftMaster);
-        rightSlave.follow(rightMaster);
-
-        leftMaster.configOpenloopRamp(rampRate);
-        rightMaster.configOpenloopRamp(rampRate);
 
         m_navX = new AHRS(RobotMap.gyroPort);
     }
@@ -90,18 +86,22 @@ public class TeleOpDriveTrain extends Subsystem {
         double leftPower = power - turn;
         double rightPower = power + turn;
 
-        leftMaster.set(ControlMode.PercentOutput, leftPower);
-        rightMaster.set(ControlMode.PercentOutput, rightPower);
+        leftMaster.set(leftPower);
+        rightMaster.set(rightPower);
+        leftSlave.set(ControlMode.PercentOutput, leftPower);
+        rightSlave.set(ControlMode.PercentOutput, rightPower);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
-        leftMaster.set(ControlMode.PercentOutput, leftPower);
-        rightMaster.set(ControlMode.PercentOutput, rightPower);
+        leftMaster.set(leftPower);
+        rightMaster.set(rightPower);
+        leftSlave.set(ControlMode.PercentOutput, leftPower);
+        rightSlave.set(ControlMode.PercentOutput, rightPower);
     }
 
-    public void setupPath(double xOffset, double yOffset, double startAngle) {
-        leftMaster.setSelectedSensorPosition(0);
-        rightMaster.setSelectedSensorPosition(0);
+    /**public void setupPath(double xOffset, double yOffset, double startAngle) {
+        leftMaster.getEncoder().setPosition(0);
+        rightMaster.getEncoder().setPosition(0);
         zeroGyro(startAngle);
 
         // 3 Waypoints, x (in meters), y (in meters), exit angle (radians)
@@ -143,9 +143,9 @@ public class TeleOpDriveTrain extends Subsystem {
         rightFollower.configureEncoder(0, ticksPerRev, wheelDiameter);
         // You must tune the PID values on the following line!
         rightFollower.configurePIDVA(.5, 0.0, 0.0, .7394, .2182);
-    }
+    }**/
 
-    public void followPath() {
+    /**public void followPath() {
         double left_speed = leftFollower.calculate(getLeftEncoderPos());
         double right_speed = rightFollower.calculate(getRightEncoderPos());
         double heading = getSelectedGyroValue();
@@ -155,28 +155,30 @@ public class TeleOpDriveTrain extends Subsystem {
         /**heading_difference = heading_difference % 360.0;
         if (Math.abs(heading_difference) > 180.0) {
             heading_difference = (heading_difference > 0) ? heading_difference - 360 : heading_difference + 360;
-        }*/
+        }
 
         double turn =  .01 * heading_difference;
 
         SmartDashboard.putNumber("Gyro", heading);
         SmartDashboard.putNumber("Left speed", left_speed);
         SmartDashboard.putNumber("Right speed", right_speed);
-        SmartDashboard.putNumber("Left Encoder", leftMaster.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Right Encoder", rightMaster.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Left Encoder", leftMaster.getEncoder().getPosition());
+        SmartDashboard.putNumber("Right Encoder", rightMaster.getEncoder().getPosition());
 
-        leftMaster.set(ControlMode.PercentOutput, (left_speed + turn)); //+ turn -turn
-        rightMaster.set(ControlMode.PercentOutput, -(right_speed - turn)); //- turn -turn
-    }
+        leftMaster.set((left_speed + turn)); //+ turn -turn
+        rightMaster.set(-(right_speed - turn)); //- turn -turn
+        leftSlave.set(ControlMode.PercentOutput, (left_speed + turn)); //+ turn -turn
+        rightSlave.set(ControlMode.PercentOutput, -(right_speed - turn)); //- turn -turn
+    }**/
 
     /**Method used by system to check if FOLLOWERS are finished
      *
      * @return Boolean whether followers are finished
      */
-    public boolean pathComplete() {
+    /**public boolean pathComplete() {
         //AND instead of OR operator?
         return leftFollower.isFinished() || rightFollower.isFinished();
-    }
+    }**/
 
     public void limeLightTrack() {
         SmartDashboard.putBoolean("Entered Method", true);
@@ -249,8 +251,10 @@ public class TeleOpDriveTrain extends Subsystem {
         } else {
         }
 
-        leftMaster.set(ControlMode.PercentOutput, +steering_adjust);
-        rightMaster.set(ControlMode.PercentOutput, steering_adjust);
+        leftMaster.set(+steering_adjust);
+        rightMaster.set(steering_adjust);
+        leftSlave.set(ControlMode.PercentOutput, +steering_adjust);
+        rightSlave.set(ControlMode.PercentOutput, steering_adjust);
     }
 
     public boolean onTarget(double x) {
@@ -268,16 +272,18 @@ public class TeleOpDriveTrain extends Subsystem {
     }
 
     public void stop() {
-        leftMaster.set(ControlMode.PercentOutput, 0);
-        rightMaster.set(ControlMode.PercentOutput, 0);
+        leftMaster.set(0);
+        rightMaster.set(0);
+        leftSlave.set(ControlMode.PercentOutput, 0);
+        rightSlave.set(ControlMode.PercentOutput, 0);
     }
 
-    public int getLeftEncoderPos() {
-        return leftMaster.getSelectedSensorPosition();
+    public double getLeftEncoderPos() {
+        return leftMaster.getEncoder().getPosition();
     }
 
-    public int getRightEncoderPos() {
-        return -rightMaster.getSelectedSensorPosition();
+    public double getRightEncoderPos() {
+        return -rightMaster.getEncoder().getPosition();
     }
 
     public double getSelectedGyroValue() {

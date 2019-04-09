@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.AutoTests.*;
 import frc.robot.commands.*;
 import frc.robot.commands.test.*;
 import frc.robot.subsystems.*;
@@ -27,7 +25,7 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
     private TeleOpDriveTrain teleOpDriveTrain;
     private DriveTest driveTest;
-    private TeleopDrive teleopDrive;
+    private DriveCommand driveCommand;
     private ElevatorCommand elevatorCommand;
     private ElevatorTest elevatorTest;
     private TeleOpElevator teleOpElevator;
@@ -62,7 +60,7 @@ public class Robot extends TimedRobot {
         teleOpWrist = new TeleOpWrist();
         teleOpHab = new TeleOpHab();
 
-        teleopDrive = new TeleopDrive(teleOpDriveTrain);
+        driveCommand = new DriveCommand(teleOpDriveTrain);
         driveTest = new DriveTest(teleOpDriveTrain);
         elevatorCommand = new ElevatorCommand(teleOpElevator);
         elevatorTest = new ElevatorTest(teleOpElevator);
@@ -91,7 +89,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        teleopDrive.start();
+        driveCommand.start();
         elevatorCommand.start();
         hatchCommand.start();
         cargoCommand.start();
@@ -116,7 +114,7 @@ public class Robot extends TimedRobot {
 
         //selectedAutoCommand.start();
 
-        teleopDrive.start();
+        driveCommand.start();
         elevatorCommand.start();
         hatchCommand.start();
         cargoCommand.start();

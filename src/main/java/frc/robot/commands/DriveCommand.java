@@ -18,7 +18,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class TeleopDrive extends Command {
+public class DriveCommand extends Command {
     private TeleOpDriveTrain drive;
 
     private double KpAim;
@@ -30,7 +30,7 @@ public class TeleopDrive extends Command {
     private double[] pos;
     private boolean firstRun = true;
 
-    public TeleopDrive(TeleOpDriveTrain drive) {
+    public DriveCommand(TeleOpDriveTrain drive) {
         // Use requires() here to declare subsystem dependencies
         requires(drive);
         this.drive = drive;
@@ -43,8 +43,8 @@ public class TeleopDrive extends Command {
         KpDistance = -0.1f;
         min_aim_command = 0.05f;
 
-        drive.leftMaster.setSelectedSensorPosition(0);
-        drive.rightMaster.setSelectedSensorPosition(0);
+        drive.leftMaster.getEncoder().setPosition(0);
+        drive.rightMaster.getEncoder().setPosition(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -66,7 +66,7 @@ public class TeleopDrive extends Command {
         if (OI.get().limeLight()) {
             //if ((!drive.onTarget(xDeg) && firstRun) || false) {
                 //drive.aimAtTarget(xDeg);
-            /**}*/ if (firstRun) {
+            // if (firstRun) {
                 /**double angleToTarget = Math.atan(z / x);
 
                 if (x > 0) {
@@ -83,14 +83,14 @@ public class TeleopDrive extends Command {
 
                 //drive.setupPath(-(z + 30), (x), angleToTarget);
 
-                drive.setupPath(1, 0, 0);
+        //        drive.setupPath(1, 0, 0);
 
-                firstRun = false;
-            } else if (!drive.pathComplete() || true){
-                drive.followPath();
-            } else {
+          //      firstRun = false;
+          //  } else if (!drive.pathComplete() || true){
+          //      drive.followPath();
+          //  } else {
                 //drive.arcadeDrive(0,0);
-            }
+           // }
 
             /*if (elevator.gyroCalibrated()) {
              if (firstRun) {
